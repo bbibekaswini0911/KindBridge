@@ -112,6 +112,19 @@ WSGI_APPLICATION = 'KindBridge.wsgi.application'
 # =====================================================
 # DATABASE - MYSQL
 # =====================================================
+DATABASE_OPTIONS = {
+    'charset': 'utf8mb4',
+}
+
+# Enable TLS for the online TiDB database
+if os.getenv('DB_HOST', '127.0.0.1') not in ('127.0.0.1', 'localhost'):
+    DATABASE_OPTIONS.update({
+        'ssl_mode': 'VERIFY_IDENTITY',
+        'ssl': {
+            'ca': '/etc/ssl/certs/ca-certificates.crt',
+        },
+    })
+
 
 DATABASES = {
     'default': {
@@ -121,11 +134,7 @@ DATABASES = {
         'PASSWORD': os.getenv('DB_PASSWORD', ''),
         'HOST': os.getenv('DB_HOST', '127.0.0.1'),
         'PORT': os.getenv('DB_PORT', '3306'),
-
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-
+        'OPTIONS': DATABASE_OPTIONS,
         'CONN_MAX_AGE': 60,
     }
 }
