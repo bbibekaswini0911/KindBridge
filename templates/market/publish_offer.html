@@ -1,0 +1,32 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Publish an item | KindBridge{% endblock %}
+{% block page_title %}Publish an item{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/offer-form.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>Publish an item</h1>
+    <p>Have something you want to give? Care centres will see it and ask for it. You choose who gets it.</p>
+  </div>
+</div>
+
+<form class="fbox" method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  <div class="fgrid">
+    {% for field in form %}
+      <div class="field {% if field.name == 'description' or field.name == 'photos' or field.name == 'address' %}wide{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.name == 'photos' %}<p class="hint">JPG or PNG, up to 3 photos, each below 3 MB.</p>{% endif %}
+        {% if field.errors %}<p class="err">{{ field.errors|join:' ' }}</p>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="preview" id="preview"></div>
+  <button class="btn" type="submit">Publish item</button>
+</form>
+{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/photo-preview.js' %}"></script>{% endblock %}

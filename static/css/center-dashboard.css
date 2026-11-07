@@ -1,0 +1,319 @@
+/* ==========================================
+   KindBridghe- CARE CENTER DASHBOARD
+========================================== */
+
+/* Dashboard Heading */
+.cd h1 {
+    font-size: clamp(26px, 3vw, 38px);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.sub {
+    color: var(--mut);
+    margin: 0 0 24px;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Dashboard Statistics Grid */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+/* Individual Statistics Card */
+.stat {
+    background: linear-gradient(145deg, #191315, #111112);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 28px 18px;
+    text-align: center;
+    min-height: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.stat:hover {
+    transform: translateY(-5px);
+    border-color: rgba(230, 75, 98, 0.5);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+}
+
+/* Statistics Number */
+.stat b {
+    display: block;
+    font: 700 36px Poppins, sans-serif;
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+/* Statistics Label */
+.stat span {
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Dashboard Content Box */
+.box {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 26px;
+    margin-bottom: 25px;
+    transition: border-color 0.3s ease;
+}
+
+.box h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+/* Empty State */
+.empty {
+    margin: 0;
+    padding: 15px 0;
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.empty a {
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.empty a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================
+   DONATION TABLE
+========================================== */
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: var(--mut);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+}
+
+td {
+    padding: 15px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, 0.025);
+}
+
+tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Status Labels */
+.pill {
+    display: inline-block;
+    border-radius: 99px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pill.pending {
+    background: rgba(240, 195, 90, 0.14);
+    color: var(--warn);
+}
+
+.pill.approved {
+    background: rgba(79, 209, 139, 0.14);
+    color: var(--ok);
+}
+
+.pill.rejected {
+    background: rgba(255, 122, 137, 0.14);
+    color: var(--bad);
+}
+
+/* ==========================================
+   RESPONSIVE DASHBOARD
+========================================== */
+
+/* Tablets */
+@media(max-width: 1000px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Mobile */
+@media(max-width: 640px) {
+
+    .cd h1 {
+        font-size: 25px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .stat {
+        padding: 22px 10px;
+        min-height: 100px;
+    }
+
+    .stat b {
+        font-size: 30px;
+    }
+
+    .stat span {
+        font-size: 12px;
+    }
+
+    .box {
+        padding: 18px;
+    }
+
+    .box h2 {
+        font-size: 19px;
+    }
+
+    /* Responsive Table */
+    thead {
+        display: none;
+    }
+
+    tr {
+        display: block;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    tr:last-child {
+        border-bottom: 0;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        border: 0;
+        padding: 7px 0;
+    }
+
+    td[data-label]::before {
+        content: attr(data-label);
+        color: var(--mut);
+        font-size: 13px;
+        font-weight: 600;
+    }
+}
+
+/* ==========================================
+   CARE CENTER DASHBOARD - STATISTICS
+========================================== */
+
+.stats {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 18px;
+    width: 100%;
+    margin: 25px 0 28px;
+}
+
+.stats > .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    min-height: 125px;
+    box-sizing: border-box;
+    padding: 22px 15px;
+    text-align: center;
+
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+
+    transition: transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+}
+
+.stats > .stat:hover {
+    transform: translateY(-4px);
+    border-color: #d9435b;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.stats > .stat b {
+    display: block;
+    font: 700 36px Poppins, sans-serif;
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+.stats > .stat span {
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Tablet */
+@media(max-width: 860px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+/* Mobile */
+@media(max-width: 480px) {
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px;
+    }
+
+    .stats > .stat {
+        min-height: 105px;
+        padding: 15px 8px;
+    }
+
+    .stats > .stat b {
+        font-size: 29px;
+    }
+
+    .stats > .stat span {
+        font-size: 12px;
+    }
+}

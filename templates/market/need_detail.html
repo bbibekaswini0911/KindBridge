@@ -1,0 +1,87 @@
+{% extends base_layout %}
+{% load static %}
+{% block title %}{{ post.title }} | KindBridge{% endblock %}
+{% block page_title %}Request details{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/need-detail.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<section class="nd">
+  <a class="back" href="{% if user.is_authenticated %}{% url 'need_board' %}{% else %}{% url 'home' %}{% endif %}">&larr; Back</a>
+
+  <div class="nd-grid">
+    <div class="gal">
+      {% if post.photos.all %}
+        <div class="main"><img id="mainImg" src="{{ post.cover.image.url }}" alt="{{ post.title }}"></div>
+        {% if post.photos.all|length > 1 %}
+          <div class="thumbs">{% for ph in post.photos.all %}<img src="{{ ph.image.url }}" alt="" data-full="{{ ph.image.url }}">{% endfor %}</div>
+        {% endif %}
+      {% else %}
+        <div class="main ph">{{ post.title|first }}</div>
+      {% endif %}
+    </div>
+
+    <div class="info">
+      <span class="chip">{{ post.get_category_display }}</span>
+      <h1>{{ post.title }}</h1>
+      <p class="by">Posted by <a href="{% url 'center_detail' post.center.pk %}">{{ post.center.name }}</a>, {{ post.center.district }}, {{ post.center.state }}</p>
+      <div class="bar"><i style="--w: {{ post.percent }} %; width: var(--w)"></i></div>
+      <p class="meta">{{ post.remaining }} of {{ post.quantity }} {{ post.unit }} still needed{% if post.needed_by %} &middot; needed by {{ post.needed_by|date:"d M Y" }}{% endif %}</p>
+      <p class="desc">{{ post.description|linebreaksbr }}</p>
+      <p class="meta">Posted on {{ post.created_at|date:"d M Y" }}</p>
+
+      {% if user.is_authenticated %}
+        {% if role == 'donor' %}
+          {% if my_pledge %}
+            <div class="note ok">You have taken {{ my_pledge.quantity }} of this request. <a href="{% url 'deal_detail' 'pledge' my_pledge.pk %}">Open my donation</a></div>
+          {% elif post.is_open %}
+            <form class="take" method="post" action="{% url 'take_need' post.pk %}">
+              {% csrf_token %}
+              <h3>I can give this</h3>
+              <div class="field">
+                <label for="qty">Quantity you will give (up to {{ post.remaining }})</label>
+                <input id="qty" type="number" name="quantity" min="1" max="{{ post.remaining }}" value="{{ post.remaining }}" required>
+              </div>
+              <div class="field">
+                <label for="msg">Message (optional)</label>
+                <textarea id="msg" name="message" rows="3"></textarea>
+              </div>
+              <button class="btn full" type="submit">Take this request</button>
+              <p class="hint">First come, first served. After you take it, the care centre contact details open for you.</p>
+            </form>
+          {% else %}
+            <div class="note">This request is not open any more.</div>
+          {% endif %}
+        {% elif role == 'center' %}
+          <div class="note">Care centres cannot take requests. Donors can.</div>
+        {% endif %}
+      {% else %}
+        <div class="note"><a class="btn" href="{% url 'login' %}?next={{ request.path }}">Log in as a donor to take this</a></div>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if pledges %}
+    <div class="box">
+      <h2>Donors who took this request</h2>
+      <div class="table-wrap">
+        <table class="stack">
+          <thead><tr><th>Donor</th><th>Quantity</th><th>Status</th><th>Date</th><th></th></tr></thead>
+          <tbody>
+            {% for p in pledges %}
+              <tr>
+                <td data-label="Donor">{{ p.donor.user.get_full_name|default:p.donor.user.username }}</td>
+                <td data-label="Quantity">{{ p.quantity }}</td>
+                <td data-label="Status"><span class="pill s-{{ p.status }}">{{ p.get_status_display }}</span></td>
+                <td data-label="Date">{{ p.created_at|date:"d M Y" }}</td>
+                <td><a class="btn ghost small" href="{% url 'deal_detail' 'pledge' p.pk %}">Open</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/gallery.js' %}"></script>{% endblock %}

@@ -1,0 +1,132 @@
+/* ==========================================
+   PROFILE FORM - SAHOYOG
+========================================== */
+
+.fgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 25px;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+/* Full Width Field */
+.fgrid .wide {
+    grid-column: 1 / -1;
+}
+
+/* Individual Fields */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+/* Labels */
+.field label {
+    color: #e9e2e2;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Input Fields */
+.field input:not([type="file"]),
+.field select,
+.field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 15px;
+    background: #1c191a;
+    color: #f5eeee;
+    border: 1px solid #393234;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+/* Textarea */
+.field textarea {
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Placeholder */
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #888;
+}
+
+/* Focus Effect */
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+    border-color: #e64b62;
+    box-shadow: 0 0 0 3px rgba(230, 75, 98, 0.12);
+}
+
+/* File Upload */
+.field input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    background: #1c191a;
+    color: #ccc;
+    border: 1px dashed #57444a;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.field input[type="file"]::file-selector-button {
+    background: #383033;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 9px 14px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Links */
+.field a {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.field a:hover {
+    text-decoration: underline;
+}
+
+/* Save Button */
+.fgrid button[type="submit"],
+.fgrid input[type="submit"] {
+    padding: 13px 28px;
+    background: linear-gradient(135deg, #ed5069, #a91f39);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.fgrid button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(230, 75, 98, 0.2);
+}
+
+/* Mobile */
+@media(max-width: 640px) {
+    .fgrid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .fgrid .wide {
+        grid-column: auto;
+    }
+}

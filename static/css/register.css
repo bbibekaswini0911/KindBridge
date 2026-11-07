@@ -1,0 +1,41 @@
+.reg{padding:28px 20px 40px}
+.reg-box{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:.8fr 1.4fr;background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 0 90px rgba(224,74,92,.14)}
+
+/* left panel */
+.reg-side{position:relative;overflow:hidden;padding:40px 34px;background:linear-gradient(160deg,#5a1220,#2a0a10 70%);display:flex;flex-direction:column;gap:14px}
+.reg-mark{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,var(--red),var(--maroon));box-shadow:0 0 28px rgba(224,74,92,.55)}
+.reg-side h2{font-size:clamp(24px,2.2vw,30px);line-height:1.2}
+.reg-side p{margin:0;color:#e5cfc8}
+.reg-side ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:12px;position:relative;z-index:1}
+.reg-side li{position:relative;padding-left:28px;color:#f1e1da;font-size:16px}
+.reg-side li::before{content:"✓";position:absolute;left:0;top:0;color:var(--gold);font-weight:700}
+.reg-od{position:absolute;left:50%;top:80%;transform:translate(-50%,-50%);
+    font:700 190px/1 "Noto Sans Oriya",sans-serif;
+    color:rgba(242,163,58,.10);
+    pointer-events:none;white-space:nowrap;z-index:0}
+.reg-side>*:not(.reg-od){position:relative;z-index:1}/* right: form */
+
+.reg-main{padding:34px 40px}
+.reg-main h1{font-size:clamp(26px,2.6vw,34px);margin-bottom:4px}
+.reg-sub{margin:0 0 20px;color:var(--mut)}
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.reg-field label{display:block;margin-bottom:5px;color:var(--mut);font-size:15px}
+.reg-field input,.reg-field textarea{width:100%;padding:11px 14px;background:var(--field);border:1px solid var(--line);border-radius:10px;color:var(--tx);font:inherit;font-size:16px;transition:border-color .2s,box-shadow .2s}
+.reg-field input:focus,.reg-field textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,163,58,.15)}
+.reg-field textarea{height:46px;min-height:46px;resize:vertical}
+.reg-err{margin:5px 0 0;color:var(--bad);font-size:13px}
+.reg-btn{display:block;width:100%;margin-top:22px;padding:14px;font-size:17px}
+.reg-alt{margin:16px 0 0;text-align:center;color:var(--mut)}
+.reg-alt a{color:var(--gold);font-weight:700}
+
+@media(max-width:900px){
+  .reg-box{grid-template-columns:1fr}
+  .reg-side{padding:26px 28px}
+  .reg-side ul,.reg-od{display:none}
+}
+@media(max-width:640px){
+  .reg{padding:16px 12px 32px}
+  .reg-main{padding:24px 20px}
+  .reg-grid{grid-template-columns:1fr}
+  .reg-side h2{color:#fff}
+}

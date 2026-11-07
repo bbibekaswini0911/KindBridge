@@ -1,0 +1,16 @@
+.confirm{padding:64px 20px 90px}
+.confirm-card{max-width:620px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:44px 36px;text-align:center;box-shadow:0 0 90px rgba(79,209,139,.10)}
+.tick{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;font-size:36px;font-weight:700;color:#06210f;background:var(--ok);box-shadow:0 0 40px rgba(79,209,139,.45)}
+.confirm-card h1{font-size:clamp(26px,3.4vw,36px);margin-bottom:10px}
+.sub{color:var(--mut);margin:0 0 26px}
+.summary{margin:0 0 28px;text-align:left;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.summary div{display:flex;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.summary div:last-child{border-bottom:0}
+.summary dt{color:var(--mut)}
+.summary dd{margin:0;font-weight:500;text-align:right}
+.pill{border-radius:99px;padding:3px 14px;font-size:14px;font-weight:700}
+.pill.pending{background:rgba(240,195,90,.14);color:var(--warn)}
+.pill.approved{background:rgba(79,209,139,.14);color:var(--ok)}
+.pill.rejected{background:rgba(255,122,137,.14);color:var(--bad)}
+.actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+@media(max-width:560px){.confirm-card{padding:32px 20px}.summary div{flex-direction:column;gap:2px}.summary dd{text-align:left}}

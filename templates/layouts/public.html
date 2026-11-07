@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}KindBridge{% endblock %}</title>
+  <script>try{var t=localStorage.getItem('kb-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+   <link rel="stylesheet" href="{% static 'css/components.css' %}?v=1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;700&family=Noto+Sans+Oriya:wght@700&display=swap">
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}?v=2">
+  <link rel="stylesheet" href="{% static 'css/public.css' %}?v=2">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="{% url 'home' %}"><span class="mark">&#9829;</span><span class="name">Kind<b>Bridge</b></span></a>
+
+      {% if not user.is_authenticated %}
+      <nav class="nav" id="mainNav">
+        <a href="{% url 'home' %}">Home</a>
+        <div class="has-mega">
+          <button class="mega-btn" type="button" aria-expanded="false">Care centers <span class="caret">&#9662;</span></button>
+          <div class="mega">
+            <div>
+              <h5>By type</h5>
+              <a href="{% url 'search' %}?type=orphanage">Orphanages</a>
+              <a href="{% url 'search' %}?type=old_age_home">Old age homes</a>
+              <a href="{% url 'search' %}?type=care_center">Care centers</a>
+            </div>
+            <div>
+              <h5>By need</h5>
+              <a href="{% url 'search' %}?need=food">Food</a>
+              <a href="{% url 'search' %}?need=clothes">Clothes</a>
+              <a href="{% url 'search' %}?need=medicine">Medicine</a>
+              <a href="{% url 'search' %}?need=books">Books</a>
+            </div>
+            <div>
+              <h5>Learn</h5>
+              <a href="{% url 'home' %}#process">How it works</a>
+              <a href="{% url 'home' %}#faq">FAQ</a>
+              <a href="{% url 'home' %}#contact">Contact us</a>
+            </div>
+          </div>
+        </div>
+        <a href="{% url 'home' %}#process">How it works</a>
+        <a href="{% url 'home' %}#faq">FAQ</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+        <div class="auth">
+          <a class="btn ghost" href="{% url 'login' %}">Login</a>
+          <a class="btn" href="{% url 'register' %}">Get started</a>
+        </div>
+      </nav>
+      {% endif %}
+
+      <div class="head-right{% if user.is_authenticated %} solo{% endif %}">
+        <button class="theme-btn" type="button" data-theme-toggle aria-label="Switch light or dark mode">
+          <svg class="ic ic-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="ic ic-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+
+        {% if user.is_authenticated %}
+          <div class="acct" id="acct">
+            <button class="avatar" id="acctBtn" type="button" aria-expanded="false" aria-label="Account menu">{{ display_name|first|upper }}</button>
+            <div class="acct-menu">
+              <div class="acct-head">
+                <b>{{ display_name }}</b>
+                <small>{% if role == 'donor' %}Donor{% elif role == 'center' %}Care center{% else %}Administrator{% endif %}</small>
+              </div>
+              {% if role == 'center' %}<a href="{% url 'center_dashboard' %}">Go to dashboard</a>
+              {% elif role == 'donor' %}<a href="{% url 'dashboard' %}">Go to dashboard</a>
+              {% else %}<a href="{% url 'admin:index' %}">Admin panel</a>{% endif %}
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Log out</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <button class="burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><i></i></button>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="toast-area" id="toastArea" aria-live="polite">
+    {% for message in messages %}
+      <div class="toast {{ message.tags }}">
+        <span>{{ message }}</span>
+        <button type="button" class="toast-close" aria-label="Close">&times;</button>
+      </div>
+    {% endfor %}
+  </div>
+
+  <main>{% block content %}{% endblock %}</main>
+  {% block footer %}{% endblock %}
+
+  <script src="{% static 'js/popup.js' %}"></script>
+  <script src="{% static 'js/theme.js' %}"></script>
+  <script src="{% static 'js/nav.js' %}"></script>
+  <script src="{% static 'js/public.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

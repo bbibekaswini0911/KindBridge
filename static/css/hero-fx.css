@@ -1,0 +1,104 @@
+/* ===== Hero animations and floating contact button ===== */
+.hero{position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,72%) var(--my,30%),rgba(242,163,58,.11),transparent 60%)}
+.hero-fx{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.hero-grid{position:relative;z-index:1}
+
+/* drifting glow blobs */
+.blob{position:absolute;border-radius:50%;filter:blur(70px);will-change:transform}
+.blob.b1{width:380px;height:380px;left:-90px;top:12%;background:rgba(224,74,92,.32);animation:drift1 14s ease-in-out infinite alternate}
+.blob.b2{width:320px;height:320px;right:10%;top:-70px;background:rgba(242,163,58,.26);animation:drift2 17s ease-in-out infinite alternate}
+.blob.b3{width:420px;height:420px;right:-130px;bottom:-130px;background:rgba(138,28,43,.5);animation:drift1 20s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate(90px,-60px) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-110px,70px) scale(.9)}}
+
+/* hearts floating up */
+.fx-heart{position:absolute;left:var(--x);bottom:-30px;font-size:var(--s);color:rgba(242,163,58,.55);opacity:0;animation:heartUp var(--t) linear var(--d) infinite}
+@keyframes heartUp{
+  0%{transform:translate(0,0) scale(.5);opacity:0}
+  12%{opacity:1}
+  50%{transform:translate(18px,-45vh) scale(1)}
+  100%{transform:translate(-14px,-95vh) scale(.8);opacity:0}
+}
+
+/* badge: pulsing dot and shine */
+.badge{position:relative;overflow:hidden}
+.badge::before{content:"";display:inline-block;width:8px;height:8px;margin-right:10px;border-radius:50%;background:var(--gold);animation:dotPulse 1.8s ease-out infinite}
+.badge::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);animation:shine 5s ease-in-out infinite}
+@keyframes dotPulse{0%{box-shadow:0 0 0 0 rgba(242,163,58,.7)}100%{box-shadow:0 0 0 10px rgba(242,163,58,0)}}
+@keyframes shine{0%,60%{left:-60%}100%{left:130%}}
+
+/* tags pop in one by one */
+.tags a{animation:tagPop .6s cubic-bezier(.34,1.4,.64,1) backwards}
+.tags a:nth-child(1){animation-delay:.60s}
+.tags a:nth-child(2){animation-delay:.67s}
+.tags a:nth-child(3){animation-delay:.74s}
+.tags a:nth-child(4){animation-delay:.81s}
+.tags a:nth-child(5){animation-delay:.88s}
+.tags a:nth-child(6){animation-delay:.95s}
+.tags a:nth-child(7){animation-delay:1.02s}
+@keyframes tagPop{from{opacity:0;transform:scale(.6) translateY(14px)}}
+
+/* search card: spinning glow border, tilt, floating chips */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+.search-wrap{position:relative;perspective:1200px}
+.search-card{position:relative;transition:transform .2s ease-out;transform-style:preserve-3d}
+.search-card::before{content:"";position:absolute;inset:-1px;border-radius:19px;padding:2px;pointer-events:none;background:conic-gradient(from var(--ang),transparent 0 68%,var(--gold),var(--red),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:spinAng 6s linear infinite}
+@keyframes spinAng{to{--ang:360deg}}
+.search-card .btn{animation:btnGlow 2.6s ease-in-out infinite}
+@keyframes btnGlow{0%{box-shadow:0 0 0 0 rgba(224,74,92,.55)}70%,100%{box-shadow:0 0 0 14px rgba(224,74,92,0)}}
+
+.fx-chip{position:absolute;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(21,13,14,.94);border:1px solid var(--line);border-radius:14px;font-size:15px;font-weight:600;box-shadow:0 14px 40px rgba(0,0,0,.55);animation:bob 5s ease-in-out infinite}
+.fx-chip i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:rgba(79,209,139,.18);color:var(--ok);font-style:normal;font-size:14px}
+.fx-chip.c2 i{background:rgba(224,74,92,.18);color:var(--red)}
+.fx-chip.c1{left:-40px;top:-30px}
+.fx-chip.c2{right:-24px;bottom:-26px;animation-delay:-2.5s}
+@keyframes bob{50%{transform:translateY(-12px)}}
+
+/* scroll cue */
+.scroll-cue{position:absolute;left:50%;bottom:22px;z-index:1;width:26px;height:42px;margin-left:-13px;border:2px solid rgba(255,255,255,.35);border-radius:14px}
+.scroll-cue span{position:absolute;left:50%;top:7px;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:var(--gold);animation:cue 1.8s ease-in-out infinite}
+@keyframes cue{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(16px)}}
+
+/* floating contact button */
+.fab{position:fixed;right:24px;bottom:24px;z-index:90}
+.fab-btn{display:flex;align-items:center;gap:10px;border:0;border-radius:99px;padding:14px 24px;font:700 16px Inter,sans-serif;color:#fff;background:linear-gradient(135deg,var(--red),var(--maroon));box-shadow:0 14px 40px rgba(224,74,92,.45);cursor:grab;touch-action:none;user-select:none;animation:fabFloat 3.6s ease-in-out infinite}
+.fab-ic{font-size:19px}
+.fab.dragging .fab-btn{cursor:grabbing;animation:none;transform:scale(1.07);box-shadow:0 20px 50px rgba(224,74,92,.6)}
+@keyframes fabFloat{50%{transform:translateY(-8px)}}
+.fab-panel{position:absolute;right:0;bottom:calc(100% + 14px);width:290px;padding:20px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.7);opacity:0;visibility:hidden;transform:translateY(10px) scale(.96);transform-origin:bottom right;transition:opacity .25s,transform .25s,visibility 0s linear .25s}
+.fab.open .fab-panel{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.fab.down .fab-panel{bottom:auto;top:calc(100% + 14px);transform-origin:top right}
+.fab.left .fab-panel{right:auto;left:0}
+.fab-panel h4{font-size:22px;margin-bottom:4px}
+.fab-panel p{margin:0 0 10px;color:var(--mut);font-size:15px}
+.fab-panel a.line{display:block;padding:9px 0;color:var(--tx);border-bottom:1px solid var(--line);transition:color .2s}
+.fab-panel a.line:hover{color:var(--gold)}
+.fab-panel .btn{margin-top:14px;text-align:center}
+
+@media(max-width:1100px){.fx-chip{display:none}}
+@media(max-width:600px){
+  .fab{right:14px;bottom:14px}
+  .fab-btn{padding:12px 18px;font-size:15px}
+  .fab-panel{width:min(290px,calc(100vw - 28px))}
+  .scroll-cue{display:none}
+}
+
+/* fade the glow out at the bottom so there is no hard edge */
+.hero-fx{-webkit-mask-image:linear-gradient(#000 62%,transparent 100%);mask-image:linear-gradient(#000 62%,transparent 100%)}
+.hero::after{-webkit-mask-image:linear-gradient(#000 62%,transparent 100%);mask-image:linear-gradient(#000 62%,transparent 100%)}
+
+/* hearts: a little bigger and brighter so they are easy to notice */
+.fx-heart{color:rgba(242,163,58,.85);text-shadow:0 0 10px rgba(242,163,58,.5)}
+
+/* hero fills the first screen, so the next section starts below it */
+.hero{min-height:calc(100vh - 80px);min-height:calc(100svh - 80px);display:flex;align-items:center;padding:60px 0 120px}
+.hero .wrap{width:100%}
+.scroll-cue{bottom:32px}
+
+
+
+.blob{filter:blur(48px)}
+@media(max-width:900px){.hero-fx,.fx-chip{display:none}}
+@media(prefers-reduced-motion:reduce){.hero-fx{display:none}}
+

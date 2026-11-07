@@ -1,0 +1,32 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Post a need | KindBridge{% endblock %}
+{% block page_title %}Post a need{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/post-form.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>Post a need</h1>
+    <p>Everything you post is shown to all donors in the Needs market and on the landing page.</p>
+  </div>
+</div>
+
+<form class="fbox" method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  <div class="fgrid">
+    {% for field in form %}
+      <div class="field {% if field.name == 'description' or field.name == 'photos' %}wide{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.name == 'photos' %}<p class="hint">JPG or PNG, up to 3 photos, each below 3 MB.</p>{% endif %}
+        {% if field.errors %}<p class="err">{{ field.errors|join:' ' }}</p>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="preview" id="preview"></div>
+  <button class="btn" type="submit">Publish to the market</button>
+</form>
+{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/photo-preview.js' %}"></script>{% endblock %}

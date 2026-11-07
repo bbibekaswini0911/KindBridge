@@ -1,0 +1,12 @@
+.auth-body{min-height:100vh;display:flex;flex-direction:column}
+.auth-top{display:flex;justify-content:space-between;align-items:center;padding:18px 32px}
+.auth-brand{display:flex;align-items:center;gap:10px;font:700 24px Poppins,sans-serif;color:var(--tx)}
+.auth-brand b{color:var(--gold);font-weight:700}
+.mark{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:17px;background:linear-gradient(135deg,var(--red),var(--maroon));box-shadow:0 0 18px rgba(224,74,92,.45)}
+.auth-main{flex:1;display:flex;align-items:center;justify-content:center;padding:8px 20px 36px}
+.auth-main>*{width:100%}
+
+/* stop the browser autofill from painting fields blue-grey */
+input:-webkit-autofill,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px var(--field) inset;-webkit-text-fill-color:var(--tx);caret-color:var(--tx);transition:background-color 9999s}
+
+@media(max-width:600px){.auth-top{padding:14px 16px}.auth-main{padding:4px 12px 28px}}

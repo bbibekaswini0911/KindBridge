@@ -1,0 +1,167 @@
+{% extends base_layout %}
+{% load static %}
+
+{% block title %}{{ center.name }} | KindBridge{% endblock %}
+{% block page_title %}Care center{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/center-detail.css' %}?v=3">
+{% endblock %}
+
+{% block content %}
+<section class="detail">
+  <div class="dwrap">
+
+    <a class="back" href="{% if user.is_authenticated %}{% url 'explore' %}{% else %}{% url 'search' %}{% endif %}">
+      &larr; Back to care centers
+    </a>
+
+    <!-- CENTER INFORMATION -->
+    <div class="detail-grid">
+
+      <div class="info">
+        <span class="chip">{{ center.get_center_type_display }}</span>
+
+        <h1>{{ center.name }}</h1>
+
+        <p class="loc">{{ center.district }}, {{ center.state }}</p>
+
+        <p class="desc">{{ center.description|linebreaksbr }}</p>
+
+        <dl class="facts">
+          <div>
+            <dt>Address</dt>
+            <dd>{{ center.address|linebreaksbr }}</dd>
+          </div>
+
+          {% if center.phone %}
+          <div>
+            <dt>Phone</dt>
+            <dd>{{ center.phone }}</dd>
+          </div>
+          {% endif %}
+        </dl>
+      </div>
+
+      <div class="pic">
+        {% if center.image %}
+          <img src="{{ center.image.url }}" alt="{{ center.name }}">
+        {% else %}
+          <div class="ph">{{ center.name|first }}</div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- CURRENT CENTRE NEEDS -->
+    <div class="needs-box">
+
+      <div class="needs-head">
+        <h2>What this centre needs right now</h2>
+      </div>
+
+      {% if needs %}
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Category</th>
+                <th>Still needed</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for n in needs %}
+              <tr>
+                <td data-label="Item">
+                  <b>{{ n.title }}</b>
+                </td>
+
+                <td data-label="Category">
+                  <span class="chip">{{ n.get_category_display }}</span>
+                </td>
+
+                <td data-label="Still needed">
+                  {{ n.remaining }} {{ n.unit }}
+                </td>
+
+                <td>
+                  <a class="btn ghost small" href="{% url 'need_detail' n.pk %}">
+                    View and take
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      {% else %}
+        <p class="empty">This centre has no open needs right now.</p>
+      {% endif %}
+
+    </div>
+
+    <!-- CENTRE REQUIREMENTS -->
+    <div class="needs-box">
+
+      <div class="needs-head">
+        <h2>Centre Requirements</h2>
+      </div>
+
+      {% if requirements %}
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Category</th>
+                <th>Quantity needed</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for r in requirements %}
+              <tr>
+                <td data-label="Item">
+                  {{ r.item_name }}
+                </td>
+
+                <td data-label="Category">
+                  <span class="chip">{{ r.get_category_display }}</span>
+                </td>
+
+                <td data-label="Quantity needed">
+                  {{ r.quantity_needed }}
+                </td>
+
+                <td>
+                  <a class="btn ghost small" href="{% url 'donate' center.pk %}?item={{ r.pk }}">
+                    Donate this
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if not user.is_authenticated %}
+          <p class="note">
+            You will be asked to log in before sending a request.
+          </p>
+        {% endif %}
+
+      {% else %}
+        <p class="empty">This center has not listed any requirements yet.</p>
+      {% endif %}
+
+    </div>
+
+  </div>
+</section>
+{% endblock %}

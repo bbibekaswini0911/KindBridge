@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Certificate {{ number }} | KindBridge</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="{% static 'css/certificate.css' %}?v=1">
+</head>
+<body>
+  <div class="tools">
+    <button type="button" onclick="window.print()">Download as PDF / Print</button>
+    <a href="#" onclick="window.close();history.back();return false;">Close</a>
+    <span>Tip: in the print window choose "Save as PDF" as the printer.</span>
+  </div>
+
+  <main class="cert">
+    <div class="brand">&#9829; KindBridge</div>
+    <p class="kicker">Certificate of Appreciation</p>
+    <p class="lead">This certificate is proudly presented to</p>
+    <h1>{{ donor_name }}</h1>
+    <p class="body">
+      for the kind donation of <b>{{ quantity }} {{ unit }} {{ item }}</b> to
+      <b>{{ center.name }}</b>, {{ center.district }}, {{ center.state }}.
+      Your generosity brings real help to people who need it most.
+    </p>
+    <div class="sign-row">
+      <div><span class="line"></span><small>KindBridge Team</small></div>
+      <div class="seal">&#9829;</div>
+      <div><span class="line"></span><small>{{ center.name }}</small></div>
+    </div>
+    <p class="foot">Certificate no. {{ number }} &nbsp;|&nbsp; Date: {{ date|date:"d F Y" }}</p>
+  </main>
+</body>
+</html>

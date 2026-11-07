@@ -1,0 +1,29 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Request submitted | KindBridge{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/confirmation.css' %}">{% endblock %}
+
+{% block content %}
+<section class="confirm">
+  <div class="confirm-card">
+    <div class="tick">&check;</div>
+    <h1>Thank you, your request is in</h1>
+    <p class="sub">The administrator will review it soon. You can see the result once it is updated.</p>
+
+    <dl class="summary">
+      <div><dt>Care center</dt><dd>{{ donation.center.name }}</dd></div>
+      <div><dt>Item</dt><dd>{{ donation.requirement.item_name }}</dd></div>
+      <div><dt>Quantity</dt><dd>{{ donation.quantity }}</dd></div>
+      {% if donation.message %}<div><dt>Message</dt><dd>{{ donation.message }}</dd></div>{% endif %}
+      <div><dt>Submitted on</dt><dd>{{ donation.created_at|date:"d M Y, h:i A" }}</dd></div>
+      <div><dt>Status</dt><dd><span class="pill {{ donation.status }}">{{ donation.get_status_display }}</span></dd></div>
+    </dl>
+
+    <div class="actions">
+      <a class="btn" href="{% url 'track' %}">Track my requests</a>
+      <a class="btn ghost" href="{% url 'center_detail' donation.center.pk %}">Donate again</a>
+      <a class="btn ghost" href="{% url 'explore' %}">Back to care centers</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

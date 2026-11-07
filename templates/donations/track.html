@@ -1,0 +1,45 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Track requests | KindBridge{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/track.css' %}">{% endblock %}
+
+{% block content %}
+<section class="page">
+  <div class="wrap">
+    <h1>Track your requests</h1>
+    <p class="sub">See what the administrator has decided for each request.</p>
+
+    <div class="filters">
+      <a class="{% if not current %}on{% endif %}" href="{% url 'track' %}">All</a>
+      {% for value, label in statuses %}
+        <a class="{% if current == value %}on{% endif %}" href="?status={{ value }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+
+    <div class="box">
+      {% if items %}
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Care center</th><th>Item</th><th>Qty</th><th>Message</th><th>Status</th><th>Submitted</th><th>Updated</th></tr></thead>
+            <tbody>
+              {% for r in items %}
+                <tr>
+                  <td data-label="Care center"><a href="{% url 'center_detail' r.center.pk %}">{{ r.center.name }}</a></td>
+                  <td data-label="Item">{{ r.requirement.item_name }}</td>
+                  <td data-label="Qty">{{ r.quantity }}</td>
+                  <td data-label="Message">{{ r.message|default:"-"|truncatechars:40 }}</td>
+                  <td data-label="Status"><span class="pill {{ r.status }}">{{ r.get_status_display }}</span></td>
+                  <td data-label="Submitted">{{ r.created_at|date:"d M Y" }}</td>
+                  <td data-label="Updated">{{ r.updated_at|date:"d M Y" }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="empty">No requests here yet. <a href="{% url 'explore' %}">Find a care center</a>.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

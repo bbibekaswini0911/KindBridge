@@ -1,0 +1,368 @@
+/* =====================================================
+   KIND BRIDGE — ADMIN DASHBOARD
+   Page-specific styles only. Shared app/sidebar styles
+   remain controlled by app.css and theme.css.
+===================================================== */
+
+/* Page heading */
+.app-content > .ph-row {
+    margin: 0 0 24px;
+}
+
+.app-content > .ph-row h1 {
+    margin: 0 0 8px;
+    font-size: clamp(27px, 3vw, 36px);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+}
+
+.app-content > .ph-row p {
+    margin: 0;
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* Statistics */
+.app-content .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    width: 100%;
+    margin: 24px 0 26px;
+}
+
+.app-content .stats .stat {
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 112px;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.app-content .stats .stat:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: var(--shadow);
+}
+
+.app-content .stats .stat b {
+    display: block;
+    margin: 0 0 7px;
+    color: var(--gold);
+    font: 700 34px/1.1 Poppins, sans-serif;
+}
+
+.app-content .stats .stat span {
+    color: var(--mut);
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.app-content .stats .stat.warn b {
+    color: var(--warn);
+}
+
+/* Activity + shortcuts: exactly two columns on desktop */
+.app-content .two {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
+    gap: 18px;
+    align-items: stretch;
+    width: 100%;
+    margin: 0 0 22px;
+}
+
+/* Shared dashboard panels */
+.app-content .box {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    margin: 0 0 22px;
+    padding: 21px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 15px;
+}
+
+.app-content .two > .box {
+    height: 100%;
+    margin: 0;
+}
+
+.app-content .box h2 {
+    margin: 0 0 17px;
+    font: 700 19px/1.35 Poppins, sans-serif;
+}
+
+/* Donation activity chart */
+.app-content .chart {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    height: 205px;
+    padding-top: 8px;
+    box-sizing: border-box;
+}
+
+.app-content .chart .col {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    min-width: 0;
+    height: 100%;
+}
+
+.app-content .chart .col b {
+    color: var(--tx);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.app-content .chart .col span {
+    color: var(--mut);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.app-content .chart .track {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-end;
+    width: 100%;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--panel2);
+    border-radius: 7px;
+}
+
+.app-content .chart .track i {
+    display: block;
+    width: 100%;
+    height: var(--bar-height, 0%);
+    min-height: 3px;
+    background: linear-gradient(180deg, var(--gold), var(--red));
+    border-radius: 7px 7px 0 0;
+    transition: height .45s ease;
+}
+
+/* Shortcut links */
+.app-content .links {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.app-content .links a {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+    box-sizing: border-box;
+    padding: 10px 13px;
+    color: var(--tx);
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.45;
+    text-decoration: none;
+    transition: color .2s ease, border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.app-content .links a:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+    transform: translateX(2px);
+}
+
+/* Approval panel — normal full-width block after .two */
+.app-content > .approval-box {
+    width: 100%;
+    margin: 0 0 24px;
+}
+
+.app-content .approval-box > h2 {
+    margin-bottom: 14px;
+}
+
+.app-content .req {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.app-content .req:last-child {
+    border-bottom: 0;
+}
+
+.app-content .req-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.app-content .req-info h3 {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 0;
+    color: var(--tx);
+    font-size: 17px;
+    line-height: 1.45;
+}
+
+.app-content .req-info p {
+    margin: 7px 0 0;
+    color: var(--mut);
+    font-size: 13px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.app-content .req-info .about {
+    margin-top: 11px;
+    color: var(--tx);
+}
+
+.app-content .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    color: var(--gold);
+    background: var(--glow2);
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.app-content .req-actions {
+    display: flex;
+    flex: 0 0 210px;
+    gap: 9px;
+    align-items: center;
+}
+
+.app-content .req-actions form {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+}
+
+.app-content .req-actions .btn {
+    width: 100%;
+    min-height: 40px;
+    box-sizing: border-box;
+    padding: 9px 12px;
+    white-space: nowrap;
+}
+
+.app-content .req-actions .btn.danger {
+    color: var(--bad);
+    border: 1px solid var(--bad);
+    background: transparent;
+}
+
+.app-content .req-actions .btn.danger:hover {
+    background: rgba(255, 100, 120, .10);
+}
+
+/* Empty approval state */
+.app-content .approval-box .empty {
+    margin: 0;
+    padding: 18px 16px;
+    color: var(--mut);
+    background: var(--panel2);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 1150px) {
+    .app-content .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .app-content .two {
+        grid-template-columns: 1fr;
+    }
+
+    .app-content .two > .box {
+        height: auto;
+    }
+}
+
+@media (max-width: 650px) {
+    .app-content .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .app-content .stats .stat {
+        min-height: 100px;
+        padding: 14px 9px;
+    }
+
+    .app-content .stats .stat b {
+        font-size: 29px;
+    }
+
+    .app-content .box {
+        padding: 17px;
+    }
+
+    .app-content .chart {
+        height: 180px;
+        gap: 7px;
+    }
+
+    .app-content .chart .col span {
+        font-size: 9px;
+    }
+
+    .app-content .req {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .app-content .req-actions {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .app-content .stats .stat span {
+        font-size: 10px;
+    }
+
+    .app-content .req-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .app-content .req-actions form {
+        width: 100%;
+    }
+}

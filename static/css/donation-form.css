@@ -1,0 +1,20 @@
+.donate-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:start;max-width:1100px}
+.donate-card,.center-card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px}
+.donate-card{box-shadow:var(--shadow)}
+.donate-card h1{font-size:clamp(24px,2.6vw,32px);margin-bottom:8px}
+.intro{color:var(--mut);margin:0 0 22px}
+.field{margin-bottom:18px}
+.field label{display:block;margin-bottom:6px;color:var(--mut)}
+.field select,.field input,.field textarea{width:100%;padding:13px 14px;background:var(--field);border:1px solid var(--line);border-radius:10px;color:var(--tx);font:inherit;font-size:16px}
+.field select:focus,.field input:focus,.field textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,163,58,.15)}
+.field textarea{resize:vertical}
+.err{margin:6px 0 0;color:var(--bad);font-size:14px}
+.chip{display:inline-block;background:rgba(242,163,58,.14);color:var(--gold);border-radius:99px;padding:3px 14px;font-size:14px;font-weight:700}
+.center-card h2{font-size:24px;margin:14px 0 6px}
+.center-card .loc{margin:0 0 12px;color:var(--mut)}
+.addr{color:var(--mut);margin:0 0 20px}
+@media(max-width:900px){
+  .donate-grid{grid-template-columns:1fr}
+  .center-card{order:-1}
+  .donate-card,.center-card{padding:22px}
+}

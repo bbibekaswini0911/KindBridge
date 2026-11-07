@@ -1,0 +1,86 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Admin dashboard | KindBridge{% endblock %}
+{% block page_title %}Admin dashboard{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/admin-panel.css' %}?v=5">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>Administrator dashboard</h1>
+    <p>Approve care centres and watch what happens across KindBridge.</p>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat warn"><b>{{ stats.pending }}</b><span>Centres waiting for approval</span></div>
+  <div class="stat"><b>{{ stats.centers }}</b><span>Approved care centres</span></div>
+  <div class="stat"><b>{{ stats.donors }}</b><span>Registered donors</span></div>
+  <div class="stat"><b>{{ stats.needs }}</b><span>Needs posted by centres</span></div>
+  <div class="stat"><b>{{ stats.items }}</b><span>Items published by donors</span></div>
+  <div class="stat"><b>{{ stats.completed }}</b><span>Donations completed</span></div>
+  <div class="stat {% if stats.unread %}warn{% endif %}"><b>{{ stats.unread }}</b><span>Unread messages</span></div>
+</div>
+
+<div class="two">
+  <!-- Donation Activity Chart -->
+  <section class="box activity-box">
+    <h2>Donation activity per month</h2>
+    <div class="chart">
+      {% for m in monthly %}
+        <div class="col">
+          <b>{{ m.n }}</b>
+          <div class="track">
+            <i style="--bar-height: {{ m.pct|default:0 }}%;"></i>
+          </div>
+          <span>{{ m.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Shortcuts: keep this section only once -->
+  <section class="box shortcuts-box">
+    <h2>Shortcuts</h2>
+    <div class="links">
+      <a href="{% url 'admin_messages' %}">
+        Messages from the landing page
+        {% if stats.unread %}({{ stats.unread }} new){% endif %}
+      </a>
+      <a href="{% url 'records' %}">All donation records and CSV</a>
+      <a href="{% url 'admin:accounts_centerprofile_changelist' %}">Care centre accounts</a>
+      <a href="{% url 'admin:market_needpost_changelist' %}">All needs</a>
+      <a href="{% url 'admin:market_offer_changelist' %}">All donor items</a>
+      <a href="{% url 'admin:accounts_donor_changelist' %}">Donors</a>
+    </div>
+  </section>
+</div>
+
+<!-- This approval panel is a direct sibling of .two, so it appears below both columns. -->
+<section class="box approval-box">
+  <h2>Care centre registrations waiting for approval</h2>
+  {% for p in pending %}
+    <article class="req">
+      <div class="req-info">
+        <h3>{{ p.center.name }} <span class="chip">{{ p.center.get_center_type_display }}</span></h3>
+        <p class="meta2">{{ p.center.district }}, {{ p.center.state }} &nbsp;|&nbsp; Registered {{ p.created_at|date:"d M Y" }}</p>
+        <p><b>Contact:</b> {{ p.contact_person }}, {{ p.phone }}, {{ p.user.email }}</p>
+        <p><b>Address:</b> {{ p.center.address }}</p>
+        <p class="about">{{ p.center.description }}</p>
+      </div>
+      <div class="req-actions">
+        <form method="post" action="{% url 'approve_center' p.pk %}">
+          {% csrf_token %}
+          <button class="btn" type="submit">Approve</button>
+        </form>
+        <form method="post" action="{% url 'reject_center' p.pk %}" onsubmit="return confirm('Reject and remove this registration?');">
+          {% csrf_token %}
+          <button class="btn ghost danger" type="submit">Reject</button>
+        </form>
+      </div>
+    </article>
+  {% empty %}
+    <p class="empty">No care centre is waiting for approval right now.</p>
+  {% endfor %}
+</section>
+{% endblock %}

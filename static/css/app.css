@@ -1,0 +1,65 @@
+.app{display:flex;min-height:100vh}
+
+/* sidebar */
+.side{position:sticky;top:0;height:100vh;width:268px;flex:none;display:flex;flex-direction:column;gap:6px;padding:18px 14px;background:var(--panel);border-right:1px solid var(--line);overflow:hidden;z-index:60;transition:width .25s ease,transform .25s ease}
+.side-brand{display:flex;align-items:center;gap:10px;padding:4px 6px 14px;font:700 22px Poppins,sans-serif;white-space:nowrap}
+.side-brand b{color:var(--gold)}
+.mark{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:18px;background:linear-gradient(135deg,var(--red),var(--maroon));box-shadow:0 0 18px rgba(224,74,92,.45)}
+.avatar{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;border:0;color:#fff;font:700 18px Poppins,sans-serif;background:linear-gradient(135deg,var(--red),var(--maroon))}
+.side-welcome{display:flex;align-items:center;gap:12px;padding:12px;margin-bottom:10px;background:var(--panel2);border:1px solid var(--line);border-radius:14px}
+.side-welcome small{display:block;color:var(--mut);font-size:12px}
+.side-welcome b{display:block;font-size:15px;line-height:1.25;word-break:break-word}
+.side-welcome em{font-style:normal;color:var(--gold);font-size:12px}
+.side-nav{display:flex;flex-direction:column;gap:4px}
+.side-nav a{display:flex;align-items:center;gap:14px;padding:11px 12px;border-radius:10px;color:var(--mut);font-weight:500;white-space:nowrap;transition:background .2s,color .2s}
+.side-nav a:hover{background:var(--panel2);color:var(--tx)}
+.side-nav a.on{background:linear-gradient(135deg,var(--red),var(--maroon));color:#fff}
+.side-collapse{margin-top:auto;display:flex;align-items:center;gap:14px;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:none;color:var(--mut);font:500 15px Inter,sans-serif;cursor:pointer;white-space:nowrap;transition:.2s}
+.side-collapse:hover{color:var(--tx);border-color:var(--gold)}
+.side-collapse .ic{transition:transform .25s}
+.side-backdrop{display:none}
+
+/* main */
+.app-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:14px;height:64px;padding:0 24px;background:var(--bg);border-bottom:1px solid var(--line)}
+.icon-btn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--tx);display:grid;place-items:center;cursor:pointer;transition:border-color .2s}
+.icon-btn:hover{border-color:var(--gold)}
+.top-title{flex:1;font:600 18px Poppins,sans-serif}
+.top-right{display:flex;align-items:center;gap:12px}
+.acct{position:relative}
+.acct .avatar{cursor:pointer}
+.acct-menu{position:absolute;right:0;top:calc(100% + 10px);min-width:230px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s,transform .2s,visibility 0s linear .2s}
+.acct.open .acct-menu{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.acct-head{padding:10px 12px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.acct-head b{display:block}
+.acct-head small{color:var(--mut)}
+.acct-menu form{margin:0}
+.acct-menu a,.acct-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;border-radius:8px;background:none;color:var(--tx);font:500 15px Inter,sans-serif;text-align:left;cursor:pointer}
+.acct-menu a:hover,.acct-menu button:hover{background:var(--panel2)}
+.app-content{flex:1;padding:28px 32px 56px}
+
+/* old donor pages sit inside the app shell: tighten their own spacing */
+.app-content .page{padding:8px 0 24px}
+.app-content .profile-card{margin:8px auto}
+.app-content .donate{padding:8px 0 24px}
+.app-content .confirm{padding:16px 0 24px}
+
+/* collapsed sidebar (desktop) */
+@media(min-width:901px){
+  html[data-side="collapsed"] .side{width:78px}
+  html[data-side="collapsed"] .lbl{display:none}
+  html[data-side="collapsed"] .side-brand{justify-content:center;padding-inline:0}
+  html[data-side="collapsed"] .side-welcome{justify-content:center;padding:8px;background:none;border-color:transparent}
+  html[data-side="collapsed"] .side-nav a,html[data-side="collapsed"] .side-collapse{justify-content:center}
+  html[data-side="collapsed"] .side-collapse .ic{transform:rotate(180deg)}
+}
+
+/* mobile: sidebar slides in */
+@media(max-width:900px){
+  .side{position:fixed;left:0;top:0;transform:translateX(-100%);box-shadow:var(--shadow)}
+  .app.side-open .side{transform:none}
+  .app.side-open .side-backdrop{display:block;position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.55)}
+  .side-collapse{display:none}
+  .topbar{padding:0 16px}
+  .app-content{padding:20px 16px 48px}
+}

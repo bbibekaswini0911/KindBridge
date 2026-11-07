@@ -1,0 +1,134 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}{{ parts.title }} | KindBridge{% endblock %}
+{% block page_title %}Donation details{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/deal.css' %}?v=2">{% endblock %}
+
+{% block content %}
+<a class="back" href="#" onclick="history.back();return false;">&larr; Back</a>
+
+<div class="ph-row">
+  <div>
+    <span class="chip">{{ parts.type }}</span>
+    <h1>{{ parts.title }}</h1>
+    <p>{{ parts.quantity }} {{ parts.unit }} &middot; {{ parts.category }}</p>
+  </div>
+  <span class="pill big s-{{ obj.status }}">{{ obj.get_status_display }}</span>
+</div>
+
+<div class="deal-grid">
+  <div>
+    <div class="box">
+      <h2>About this donation</h2>
+      {% if parts.photos %}<div class="strip">{% for ph in parts.photos %}<img src="{{ ph.image.url }}" alt="" loading="lazy">{% endfor %}</div>{% endif %}
+      <p>{{ parts.description|linebreaksbr }}</p>
+      {% if obj.message %}<p class="note"><b>Message:</b> {{ obj.message }}</p>{% endif %}
+      <p class="meta">Started on {{ obj.created_at|date:"d M Y, h:i A" }}{% if obj.completed_at %} &middot; completed on {{ obj.completed_at|date:"d M Y" }}{% endif %}</p>
+    </div>
+
+    <div class="box">
+      <h2>Contact details</h2>
+      <div class="two">
+        <div>
+          <h3>Care centre</h3>
+          <p><b>{{ parts.center.name }}</b><br>{{ parts.center.get_center_type_display }}</p>
+          <p>{{ parts.center.address|linebreaksbr }}<br>{{ parts.center.district }}, {{ parts.center.state }}</p>
+          {% if parts.center.phone %}<p>Phone: <a href="tel:{{ parts.center.phone }}">{{ parts.center.phone }}</a></p>{% endif %}
+          {% if parts.center.owner.contact_person %}<p>Contact person: {{ parts.center.owner.contact_person }}</p>{% endif %}
+        </div>
+        <div>
+          <h3>Donor</h3>
+          {% if contact_open or role == 'donor' %}
+            <p><b>{{ parts.donor.user.get_full_name|default:parts.donor.user.username }}</b></p>
+            <p>Phone: <a href="tel:{{ parts.donor.phone }}">{{ parts.donor.phone }}</a><br>
+               Email: {{ parts.donor.user.email }}<br>{{ parts.donor.city }}, {{ parts.donor.state }}</p>
+            {% if kind == 'claim' and contact_open and role != 'donor' %}<p><b>Item address:</b><br>{{ obj.offer.address|linebreaksbr }}</p>{% endif %}
+          {% else %}
+            <p class="meta">The donor contact details open as soon as the donor accepts your request.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="box">
+      <h2>Hand-over</h2>
+      {% if obj.method or obj.person_name %}
+        <dl class="kv">
+          {% if obj.method %}<dt>Method</dt><dd>{{ obj.get_method_display }}</dd>{% endif %}
+          {% if obj.pickup_address %}<dt>Pickup address</dt><dd>{{ obj.pickup_address|linebreaksbr }}</dd>{% endif %}
+          {% if obj.pickup_date %}<dt>Date</dt><dd>{{ obj.pickup_date|date:"d M Y" }}</dd>{% endif %}
+          {% if obj.pickup_time %}<dt>Time</dt><dd>{{ obj.pickup_time }}</dd>{% endif %}
+          {% if obj.person_name %}<dt>Person from the centre</dt><dd>{{ obj.person_name }}, {{ obj.person_phone }}</dd>{% endif %}
+        </dl>
+      {% else %}
+        <p class="meta">No hand-over details yet.</p>
+      {% endif %}
+
+      {% if donor_form %}
+        <form method="post" class="hf" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="donor">
+          <h3>Your hand-over details</h3>
+          {% for field in donor_form %}
+            <div class="field">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}<p class="err">{{ field.errors|join:' ' }}</p>{% endif %}
+            </div>
+          {% endfor %}
+          <button class="btn full" type="submit">Save my details</button>
+        </form>
+      {% endif %}
+
+      {% if center_form %}
+        <form method="post" class="hf" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="center">
+          <h3>Person who will collect the item</h3>
+          {% for field in center_form %}
+            <div class="field">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}<p class="err">{{ field.errors|join:' ' }}</p>{% endif %}
+            </div>
+          {% endfor %}
+          <button class="btn full" type="submit">Save person details</button>
+        </form>
+      {% endif %}
+    </div>
+
+    <div class="box">
+      <h2>Actions</h2>
+      <div class="actions">
+        {% if can_complete %}
+          <form method="post" action="{% url 'deal_complete' kind obj.pk %}" onsubmit="return confirm('Mark this donation as received?');">
+            {% csrf_token %}
+            <button class="btn" type="submit">Mark as received</button>
+          </form>
+        {% endif %}
+        {% if can_cancel %}
+          <form method="post" action="{% url 'deal_cancel' kind obj.pk %}" onsubmit="return confirm('Cancel this donation?');">
+            {% csrf_token %}
+            <button class="btn ghost danger" type="submit">Cancel</button>
+          </form>
+        {% endif %}
+        {% if role == 'donor' and obj.status == 'completed' %}
+          {% url 'certificate' kind obj.pk as cert_url %}
+          {% if cert_url %}<a class="btn gold" href="{{ cert_url }}" target="_blank">Certificate</a>{% endif %}
+        {% endif %}
+        {% if kind == 'claim' and role == 'donor' and obj.status == 'waiting' %}
+          <a class="btn" href="{% url 'offer_detail' obj.offer.pk %}">Open the line for this item</a>
+        {% endif %}
+      </div>
+      {% if not can_complete and not can_cancel and obj.status != 'completed' %}
+        <p class="meta">No action is available right now.</p>
+      {% endif %}
+      {% if role == 'donor' and kind == 'pledge' and obj.status == 'taken' %}
+        <p class="hint">After the care centre receives the item it marks the donation as received, and you get a certificate.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Donate to {{ center.name }} | KindBridge{% endblock %}
+{% block page_title %}Send a donation request{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/donation-form.css' %}?v=2">{% endblock %}
+
+{% block content %}
+<section class="donate">
+  <div class="donate-grid">
+    <form class="donate-card" method="post" novalidate>
+      {% csrf_token %}
+      <h1>Send a donation request</h1>
+      <p class="intro">Choose what you would like to give. The care center will review your request.</p>
+
+      <div class="field">
+        <label for="{{ form.requirement.id_for_label }}">{{ form.requirement.label }}</label>
+        {{ form.requirement }}
+        {% if form.requirement.errors %}<p class="err">{{ form.requirement.errors|join:' ' }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label for="{{ form.quantity.id_for_label }}">Quantity</label>
+        {{ form.quantity }}
+        {% if form.quantity.errors %}<p class="err">{{ form.quantity.errors|join:' ' }}</p>{% endif %}
+      </div>
+      <div class="field">
+        <label for="{{ form.message.id_for_label }}">Message</label>
+        {{ form.message }}
+        {% if form.message.errors %}<p class="err">{{ form.message.errors|join:' ' }}</p>{% endif %}
+      </div>
+
+      <button class="btn full" type="submit">Submit request</button>
+    </form>
+
+    <aside class="center-card">
+      <span class="chip">{{ center.get_center_type_display }}</span>
+      <h2>{{ center.name }}</h2>
+      <p class="loc">{{ center.district }}, {{ center.state }}</p>
+      <p class="addr">{{ center.address|linebreaksbr }}</p>
+      <a class="btn ghost" href="{% url 'center_detail' center.pk %}">View all needs</a>
+    </aside>
+  </div>
+</section>
+{% endblock %}

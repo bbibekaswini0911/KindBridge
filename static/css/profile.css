@@ -1,0 +1,242 @@
+/* =========================================
+   PROFILE PAGE - KIND BRIDGE
+========================================= */
+
+/* Main profile card */
+
+.profile-card {
+    width: 100%;
+    max-width: 620px;
+    margin: 55px auto;
+    padding: 36px;
+
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+
+    box-shadow: 0 0 60px rgba(224, 74, 92, .10);
+    box-sizing: border-box;
+}
+
+/* =========================================
+   HEADING
+========================================= */
+
+.profile-card h1 {
+    font-size: clamp(27px, 3vw, 34px);
+    font-weight: 800;
+    margin: 0 0 9px;
+    color: var(--text);
+}
+
+.intro {
+    margin: 0 0 28px;
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* =========================================
+   FORM FIELDS
+========================================= */
+
+.profile-card .field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.profile-card .field label {
+    display: block;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 650;
+}
+
+/* Input fields */
+
+.profile-card .field input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+.profile-card .field textarea,
+.profile-card .field select {
+    display: block;
+    width: 100%;
+    min-height: 47px;
+    padding: 12px 14px;
+
+    box-sizing: border-box;
+
+    color: var(--text);
+    background: var(--field, #171011);
+
+    border: 1px solid var(--line);
+    border-radius: 10px;
+
+    outline: none;
+    font-family: inherit;
+    font-size: 14px;
+
+    transition: border-color .2s ease,
+                box-shadow .2s ease,
+                background .2s ease;
+}
+
+/* Placeholder */
+
+.profile-card .field input::placeholder,
+.profile-card .field textarea::placeholder {
+    color: var(--mut);
+    opacity: .8;
+}
+
+/* Focus effect */
+
+.profile-card .field input:focus,
+.profile-card .field textarea:focus,
+.profile-card .field select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(240, 195, 90, .10);
+}
+
+/* Textarea */
+
+.profile-card .field textarea {
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Select */
+
+.profile-card .field select {
+    cursor: pointer;
+}
+
+.profile-card .field select option {
+    background: #171011;
+    color: var(--text);
+}
+
+/* =========================================
+   VALIDATION ERRORS
+========================================= */
+
+.profile-card .err {
+    margin: 0;
+    padding: 9px 12px;
+
+    color: var(--bad);
+    background: rgba(255, 122, 137, .08);
+
+    border-left: 3px solid var(--bad);
+    border-radius: 5px;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
+.profile-card .btn.full {
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 8px;
+    padding: 12px 20px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: transform .2s ease,
+                box-shadow .2s ease,
+                filter .2s ease;
+}
+
+.profile-card .btn.full:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, .2);
+    filter: brightness(1.08);
+}
+
+.profile-card .btn.full:active {
+    transform: translateY(0);
+}
+
+/* =========================================
+   BACK TO DASHBOARD
+========================================= */
+
+.profile-card .alt {
+    text-align: center;
+    margin: 24px 0 0;
+    font-size: 14px;
+}
+
+.profile-card .alt a {
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: none;
+    transition: color .2s ease;
+}
+
+.profile-card .alt a:hover {
+    color: var(--text);
+    text-decoration: underline;
+}
+
+/* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+@media (max-width: 768px) {
+
+    .profile-card {
+        max-width: 580px;
+        margin: 40px auto;
+        padding: 28px;
+    }
+
+}
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .profile-card {
+        width: auto;
+        margin: 28px 14px;
+        padding: 22px 18px;
+        border-radius: 14px;
+    }
+
+    .profile-card h1 {
+        font-size: 27px;
+    }
+
+    .intro {
+        font-size: 13px;
+        margin-bottom: 23px;
+    }
+
+    .profile-card .field {
+        margin-bottom: 17px;
+    }
+
+    .profile-card .field input,
+    .profile-card .field textarea,
+    .profile-card .field select {
+        font-size: 14px;
+    }
+
+}

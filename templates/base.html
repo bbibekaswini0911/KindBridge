@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}KindBridge{% endblock %}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;700&family=Noto+Sans+Oriya:wght@700&display=swap">
+<link rel="stylesheet" href="{% static 'css/base.css' %}?v=3">  
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+  
+  <!-- <div class="topbar">
+    <div class="wrap">
+      <div class="phones">
+        <a href="tel:+919876543210">+91 98765 43210</a>
+        <a href="tel:+919012345678">+91 90123 45678</a>
+      </div>
+      <div class="socials">
+        <a href="#" aria-label="LinkedIn">in</a>
+        <a href="#" aria-label="Instagram">ig</a>
+        <a href="#" aria-label="X">X</a>
+        <a href="#" aria-label="YouTube">yt</a>
+        <a href="#" aria-label="Facebook">f</a>
+      </div>
+    </div>
+  </div> -->
+
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="{% url 'home' %}"><span class="mark">♥</span><span class="name">Kind<b>Bridge</b></span></a>
+      <button class="burger" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false"><i></i></button>
+      <nav class="nav" id="mainNav">
+        <a href="{% url 'home' %}">Home</a>
+        <div class="has-mega">
+          <button class="mega-btn" type="button" aria-expanded="false">Care centers <span class="caret">▾</span></button>
+          <div class="mega">
+            <div>
+              <h5>By type</h5>
+              <a href="{% url 'home' %}?type=orphanage#centers">Orphanages</a>
+              <a href="{% url 'home' %}?type=old_age_home#centers">Old age homes</a>
+              <a href="{% url 'home' %}?type=care_center#centers">Care centers</a>
+            </div>
+            <div>
+              <h5>By need</h5>
+              <a href="{% url 'home' %}?need=food#centers">Food</a>
+              <a href="{% url 'home' %}?need=clothes#centers">Clothes</a>
+              <a href="{% url 'home' %}?need=medicine#centers">Medicine</a>
+              <a href="{% url 'home' %}?need=books#centers">Books</a>
+            </div>
+            <div>
+              <h5>Learn</h5>
+              <a href="{% url 'home' %}#process">How it works</a>
+              <a href="{% url 'home' %}#faq">FAQ</a>
+              <a href="{% url 'home' %}#contact">Contact us</a>
+            </div>
+          </div>
+        </div>
+        <a href="{% url 'home' %}#process">How it works</a>
+        <a href="{% url 'home' %}#faq">FAQ</a>
+        <a href="{% url 'home' %}#contact">Contact</a>
+        <div class="auth">
+          {% if user.is_authenticated %}
+              <a class="hello" href="{% url 'dashboard' %}">Hi, {{ user.first_name|default:user.username }}</a>            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button class="btn ghost" type="submit">Logout</button>
+            </form>
+          {% else %}
+            <a class="btn ghost" href="{% url 'login' %}">Login</a>
+            <a class="btn" href="{% url 'register' %}">Get started</a>
+          {% endif %}
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="toast-area" id="toastArea" aria-live="polite">
+    {% for message in messages %}
+      <div class="toast {{ message.tags }}">
+        <span>{{ message }}</span>
+        <button type="button" class="toast-close" aria-label="Close">&times;</button>
+      </div>
+    {% endfor %}
+  </div>
+
+  <main>{% block content %}{% endblock %}</main>
+
+  <footer class="site-footer">
+    <div class="wrap foot-grid">
+      <div>
+        <div class="brand"><span class="mark">♥</span><span class="name">Kind<b>Bridge</b></span></div>
+        <p>Connecting donors with orphanages, old age homes and care centers.</p>
+   <div class="foot-socials">
+  <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg></a>
+  <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+  <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z"/></svg></a>
+  <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+  <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+</div>
+        <!-- <p class="small">MCA Minor Project, Group A6</p> -->
+      </div>
+      <div>
+        <h4>Quick links</h4>
+        <a href="{% url 'home' %}#centers">Care centers</a>
+        <a href="{% url 'home' %}#process">How it works</a>
+        <a href="{% url 'home' %}#faq">FAQ</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="tel:+916303770654">+91 6303770654</a>
+        <a href="mailto:support@kindbridge.example">support@kindbridge.org</a>
+        <span>Bhubaneswar, Odisha</span>
+      </div>
+    </div>
+    <div class="wrap copy">+91 8140567345 kindbridge0911@gmail.com </div>
+  </footer>
+
+  <script src="{% static 'js/popup.js' %}"></script>
+  <script src="{% static 'js/nav.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,138 @@
+{% extends 'layouts/auth.html' %}
+{% load static %}
+
+{% block title %}Login | KindBridge{% endblock %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}?v=4">
+{% endblock %}
+
+{% block content %}
+
+<section class="lg">
+
+  <aside class="lg-side">
+    <span class="lg-mark">&#9829;</span>
+
+<h2>Giving made simple and trusted</h2>
+
+<p>One place to connect kind people with homes that need them.</p>
+
+<ul>
+  <li>See exactly what each center needs</li>
+  <li>Offer items you no longer need</li>
+  <li>Follow every request until it is done</li>
+  <li>Download your records and certificates</li>
+</ul>
+
+<span class="lg-od">ଦାନ</span>
+
+  </aside>
+
+  <div class="lg-main">
+
+<h1>Welcome back</h1>
+
+<p class="lg-sub" id="loginSub">
+  Log in to donate and track your requests.
+</p>
+
+<!-- Login Role Selection -->
+<div class="role-toggle" role="tablist">
+  <button type="button"
+          class="on"
+          data-role="donor"
+          role="tab"
+          aria-selected="true">
+    Donor login
+  </button>
+
+  <button type="button"
+          data-role="center"
+          role="tab"
+          aria-selected="false">
+    Care center login
+  </button>
+</div>
+
+<!-- Login Form -->
+<form method="post">
+  {% csrf_token %}
+
+  <input type="hidden" name="next" value="{{ next }}">
+
+  <input type="hidden"
+         name="role"
+         id="roleInput"
+         value="{{ form.role.value|default:'donor' }}">
+
+  {% if form.non_field_errors %}
+    <p class="err box">{{ form.non_field_errors|join:' ' }}</p>
+  {% endif %}
+
+  <!-- Username -->
+  <div class="field">
+    <label for="{{ form.username.id_for_label }}">
+      Username
+    </label>
+
+    {{ form.username }}
+
+    {% if form.username.errors %}
+      <p class="err">{{ form.username.errors|join:' ' }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Password -->
+  <div class="field">
+    <label for="{{ form.password.id_for_label }}">
+      Password
+    </label>
+
+    {{ form.password }}
+
+    {% if form.password.errors %}
+      <p class="err">{{ form.password.errors|join:' ' }}</p>
+    {% endif %}
+  </div>
+
+  <!-- Forgot Password -->
+  <div class="forgot-password">
+    <a href="{% url 'password_reset' %}">
+      Forgot Password?
+    </a>
+  </div>
+
+  <button class="btn full" type="submit">
+    Log in
+  </button>
+
+</form>
+
+<!-- Registration -->
+<p class="alt">
+  New here?
+
+  <a id="regLink"
+     href="{% url 'register' %}"
+     data-donor="{% url 'register' %}"
+     data-center="{% url 'register_center' %}">
+    Create a donor account
+  </a>
+</p>
+
+<p class="hint">
+  Care centers can log in only after the administrator approves them.
+</p>
+
+  </div>
+
+</section>
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{% static 'js/login.js' %}"></script>
+
+{% endblock %}

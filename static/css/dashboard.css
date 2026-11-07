@@ -1,0 +1,484 @@
+/* =========================================
+   DONOR DASHBOARD - KIND BRIDGE
+========================================= */
+
+.page {
+    padding: 35px 30px 60px;
+    min-height: 100vh;
+}
+
+.page .wrap {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+/* =========================================
+   DASHBOARD HEADER
+========================================= */
+
+.ph-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 28px;
+}
+
+.page h1 {
+    font-size: clamp(30px, 3vw, 42px);
+    font-weight: 800;
+    margin: 0 0 8px;
+    line-height: 1.2;
+}
+
+.sub {
+    color: var(--mut);
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* =========================================
+   COMMON BOX
+========================================= */
+
+.box {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+    min-width: 0;
+}
+
+.box h2 {
+    font-size: 23px;
+    font-weight: 750;
+    margin: 0 0 20px;
+}
+
+/* =========================================
+   CARE CENTRE NEEDS GRID
+========================================= */
+
+.box .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+/* Individual need card */
+
+.card {
+    min-width: 0;
+    overflow: hidden;
+    background: #171011;
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    transition: transform .25s ease, border-color .25s ease,
+                box-shadow .25s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 190, 65, .55);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .22);
+}
+
+/* Need image */
+
+.card-img {
+    display: block;
+    width: 100%;
+    height: 205px;
+    overflow: hidden;
+    background: #211719;
+}
+
+.card-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.card:hover .card-img img {
+    transform: scale(1.04);
+}
+
+.card-img .ph {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--gold);
+    background: #211719;
+}
+
+/* Card information */
+
+.card-body {
+    padding: 19px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    margin-bottom: 10px;
+    border-radius: 30px;
+    background: rgba(240, 195, 90, .12);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.card-body h3 {
+    font-size: 19px;
+    font-weight: 750;
+    line-height: 1.4;
+    margin: 0 0 9px;
+    color: var(--text);
+}
+
+.meta {
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 7px 0;
+}
+
+/* Progress bar */
+
+.bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, .09);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 16px 0 10px;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    background: linear-gradient(90deg, #d93850, #f0c35a);
+    border-radius: inherit;
+}
+
+/* Card button */
+
+.card-body .btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 12px;
+    min-height: 42px;
+}
+
+/* =========================================
+   DONOR STATISTICS
+========================================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin: 25px 0 30px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    min-height: 125px;
+    padding: 22px 16px;
+    text-align: center;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    transition: border-color .2s ease, transform .2s ease;
+}
+
+.stat:hover {
+    border-color: rgba(240, 195, 90, .45);
+    transform: translateY(-3px);
+}
+
+.stat b {
+    display: block;
+    font: 800 36px Poppins, sans-serif;
+    color: var(--gold);
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
+
+.stat span {
+    color: var(--mut);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   QUICK ACTION BUTTONS
+========================================= */
+
+.quick {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0 35px;
+}
+
+.quick .btn {
+    min-height: 44px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 11px 20px;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.empty {
+    padding: 25px;
+    margin: 0;
+    text-align: center;
+    color: var(--mut);
+    background: rgba(255, 255, 255, .025);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+}
+
+.empty a {
+    color: var(--gold);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.empty a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   RECENT REQUESTS TABLE
+========================================= */
+
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th {
+    text-align: left;
+    color: var(--mut);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+}
+
+td {
+    padding: 15px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: background .2s ease;
+}
+
+tbody tr:hover {
+    background: rgba(255, 255, 255, .025);
+}
+
+tr:last-child td {
+    border-bottom: 0;
+}
+
+/* Status labels */
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 99px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.pill.pending {
+    background: rgba(240, 195, 90, .14);
+    color: var(--warn);
+}
+
+.pill.approved {
+    background: rgba(79, 209, 139, .14);
+    color: var(--ok);
+}
+
+.pill.rejected {
+    background: rgba(255, 122, 137, .14);
+    color: var(--bad);
+}
+
+/* =========================================
+   RESPONSIVE - TABLETS
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .box .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .page {
+        padding: 30px 22px 50px;
+    }
+}
+
+/* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+
+    .page {
+        padding: 24px 14px 40px;
+    }
+
+    .ph-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .page h1 {
+        font-size: 29px;
+    }
+
+    .box {
+        padding: 17px;
+        border-radius: 14px;
+    }
+
+    .box h2 {
+        font-size: 20px;
+    }
+
+    .box .cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .card-img {
+        height: 210px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .stat {
+        min-height: 110px;
+        padding: 16px 10px;
+    }
+
+    .stat b {
+        font-size: 29px;
+    }
+
+    .stat span {
+        font-size: 12px;
+    }
+
+    .quick {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .quick .btn {
+        padding: 11px 9px;
+        font-size: 12px;
+        text-align: center;
+    }
+
+    /* Mobile table */
+
+    thead {
+        display: none;
+    }
+
+    table {
+        min-width: 0;
+    }
+
+    tr {
+        display: block;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--line);
+    }
+
+    tr:last-child {
+        border-bottom: 0;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 7px 0;
+        border: 0;
+        text-align: right;
+    }
+
+    td[data-label]::before {
+        content: attr(data-label);
+        color: var(--mut);
+        font-size: 12px;
+        font-weight: 600;
+        text-align: left;
+    }
+}
+
+/* =========================================
+   VERY SMALL SCREENS
+========================================= */
+
+@media (max-width: 380px) {
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .quick {
+        grid-template-columns: 1fr;
+    }
+
+}

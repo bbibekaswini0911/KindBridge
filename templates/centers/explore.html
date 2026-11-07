@@ -1,0 +1,56 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Explore centers | KindBridge{% endblock %}
+{% block page_title %}Explore care centers{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/explore.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<section class="ex">
+  <form class="filters" method="get">
+    <select name="type" aria-label="Care center type">
+      <option value="">All types</option>
+      {% for value, label in types %}<option value="{{ value }}" {% if values.type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <select name="need" aria-label="Donation need">
+      <option value="">Any need</option>
+      {% for value, label in categories %}<option value="{{ value }}" {% if values.need == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <input name="state" value="{{ values.state }}" placeholder="State">
+    <input name="district" value="{{ values.district }}" placeholder="District or center name">
+    <button class="btn" type="submit">Search</button>
+    {% if filtered %}<a class="btn ghost" href="{% url 'explore' %}">Reset</a>{% endif %}
+  </form>
+
+  <p class="count">{{ page.paginator.count }} care center{{ page.paginator.count|pluralize }} found</p>
+
+  <div class="cards">
+    {% for c in page %}
+      <article class="card">
+        <div class="card-img">
+          {% if c.image %}<img src="{{ c.image.url }}" alt="{{ c.name }}">{% else %}<div class="ph">{{ c.name|first }}</div>{% endif %}
+        </div>
+        <div class="card-body">
+          <span class="chip">{{ c.get_center_type_display }}</span>
+          <h3>{{ c.name }}</h3>
+          <p class="loc">{{ c.district }}, {{ c.state }}</p>
+          <div class="needs">{% for r in c.requirements.all|slice:":3" %}<span>{{ r.item_name }}</span>{% endfor %}</div>
+          <a class="btn ghost" href="{% url 'center_detail' c.pk %}">View needs</a>
+        </div>
+      </article>
+    {% empty %}
+      <div class="empty">No care centers match your search. Try removing a filter.</div>
+    {% endfor %}
+  </div>
+
+  {% if page.paginator.num_pages > 1 %}
+    <nav class="pager" aria-label="Pages">
+      {% if page.has_previous %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.previous_page_number }}">&larr; Prev</a>{% endif %}
+      {% for n in page.paginator.page_range %}
+        {% if n == page.number %}<span class="on">{{ n }}</span>
+        {% else %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ n }}">{{ n }}</a>{% endif %}
+      {% endfor %}
+      {% if page.has_next %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+    </nav>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+:root{--ink:#2b1a1a;--maroon:#8a1c2b;--gold:#b8690a}
+*{box-sizing:border-box}
+body{margin:0;background:#efe7df;color:var(--ink);font-family:Inter,system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tools{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;padding:16px}
+.tools button{padding:11px 22px;border:0;border-radius:10px;background:var(--maroon);color:#fff;font:700 15px Inter,sans-serif;cursor:pointer}
+.tools a{color:var(--maroon);font-weight:700}
+.tools span{color:#6b5753;font-size:14px}
+.cert{width:min(1000px,94vw);aspect-ratio:1.414;margin:0 auto 30px;padding:40px 64px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#fffdf9;border:14px double var(--gold);box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.brand{font:700 26px Fraunces,Georgia,serif;color:var(--maroon)}
+.kicker{margin:10px 0 0;font:700 clamp(26px,4.4vw,44px) Fraunces,Georgia,serif;color:var(--gold);letter-spacing:.02em}
+.lead{margin:18px 0 6px;color:#6b5753}
+.cert h1{font:700 clamp(30px,5vw,52px) Fraunces,Georgia,serif;color:var(--ink);border-bottom:2px solid var(--gold);padding:0 26px 6px}
+.body{max-width:720px;margin:20px 0;font-size:clamp(14px,1.7vw,18px);line-height:1.7}
+.sign-row{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;width:100%;max-width:760px;margin-top:14px}
+.sign-row>div{flex:1;text-align:center}
+.line{display:block;height:2px;background:var(--ink);margin-bottom:6px}
+.sign-row small{color:#6b5753}
+.sign-row .seal{flex:none;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-size:30px;color:#fff;background:linear-gradient(135deg,#e04a5c,var(--maroon));box-shadow:0 0 0 5px #fffdf9,0 0 0 8px var(--gold)}
+.foot{margin:18px 0 0;font-size:13px;color:#6b5753}
+@page{size:A4 landscape;margin:0}
+@media print{
+  body{background:#fff}
+  .tools{display:none}
+  .cert{width:297mm;height:210mm;margin:0;aspect-ratio:auto;box-shadow:none;border-width:16px}
+}
+@media(max-width:640px){.cert{padding:20px;border-width:8px;aspect-ratio:auto;min-height:420px}}

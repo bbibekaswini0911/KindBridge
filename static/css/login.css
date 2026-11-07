@@ -1,0 +1,51 @@
+.lg{max-width:960px;margin:0 auto;display:grid;grid-template-columns:.85fr 1fr;background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+
+.lg-side{position:relative;overflow:hidden;padding:44px 34px;background:linear-gradient(160deg,#5a1220,#2a0a10 70%);display:flex;flex-direction:column;gap:14px;color:#f1e1da}
+.lg-mark{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:22px;color:#fff;background:linear-gradient(135deg,var(--red),var(--maroon));box-shadow:0 0 28px rgba(224,74,92,.55)}
+.lg-side h2{font-size:clamp(24px,2.2vw,30px);color:#fff}
+.lg-side p{margin:0;color:#e5cfc8}
+.lg-side ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:12px;position:relative;z-index:1}
+.lg-side li{position:relative;padding-left:28px;font-size:16px}
+.lg-side li::before{content:"✓";position:absolute;left:0;top:0;color:#f2a33a;font-weight:700}
+.lg-od{position:absolute;left:50%;top:50%;transform:translate(-50%,50%);font:700 160px/1 "Noto Sans Oriya",sans-serif;color:rgba(242,163,58,.10);pointer-events:none;white-space:nowrap}
+
+.lg-main{padding:42px 40px}
+.lg-main h1{font-size:clamp(28px,3vw,34px);margin-bottom:6px}
+.lg-sub{margin:0 0 20px;color:var(--mut)}
+.role-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;margin-bottom:22px;background:var(--panel2);border:1px solid var(--line);border-radius:12px}
+.role-toggle button{padding:11px 8px;border:0;border-radius:9px;background:none;color:var(--mut);font:700 15px Inter,sans-serif;cursor:pointer;transition:.2s}
+.role-toggle button.on{background:linear-gradient(135deg,var(--red),var(--maroon));color:#fff}
+.field{margin-bottom:16px}
+.field label{display:block;margin-bottom:6px;color:var(--mut);font-size:15px}
+.field input[type=text],.field input[type=password]{width:100%;padding:13px 14px;background:var(--field);border:1px solid var(--line);border-radius:10px;color:var(--tx);font:inherit;font-size:16px}
+.field input:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(242,163,58,.15)}
+.err.box{margin:0 0 16px;padding:10px 14px;border-radius:10px;color:var(--bad);font-size:14px;background:rgba(255,122,137,.1);border:1px solid rgba(255,122,137,.3)}
+.lg-main .btn.full{margin-top:6px}
+.alt{margin:20px 0 6px;text-align:center;color:var(--mut)}
+.alt a{color:var(--gold);font-weight:700}
+.hint{margin:0;text-align:center;color:var(--mut);font-size:13px}
+
+@media(max-width:860px){
+  .lg{grid-template-columns:1fr;max-width:480px}
+  .lg-side{padding:24px 26px}
+  .lg-side ul,.lg-od{display:none}
+  .lg-main{padding:28px 24px}
+}
+
+.forgot-password {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -8px;
+    margin-bottom: 18px;
+}
+
+.forgot-password a {
+    color: var(--primary, #b45345);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}

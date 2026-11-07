@@ -1,0 +1,93 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Records | KindBridge{% endblock %}
+{% block page_title %}Records{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/records.css' %}?v=2">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>Records</h1>
+    <p>Every donation in one place. Open a row for the full details.</p>
+  </div>
+
+  {% url 'export_csv' as export_url %}
+  {% if export_url %}
+    <form class="export" method="get" action="{{ export_url }}">
+      <select name="year" aria-label="Year">
+        <option value="">All years</option>
+        {% for y in years %}<option value="{{ y }}">{{ y }}</option>{% endfor %}
+      </select>
+      <select name="month" aria-label="Month">
+        <option value="">Whole year</option>
+        {% for n, name in months %}<option value="{{ n }}">{{ name }}</option>{% endfor %}
+      </select>
+      <button class="btn small" type="submit">Download CSV</button>
+    </form>
+  {% endif %}
+</div>
+
+<div class="tabs-row">
+  <a class="{% if tab == 'pending' %}on{% endif %}" href="?tab=pending{% if q %}&q={{ q|urlencode }}{% endif %}">Pending ({{ counts.pending }})</a>
+  <a class="{% if tab == 'completed' %}on{% endif %}" href="?tab=completed{% if q %}&q={{ q|urlencode }}{% endif %}">Completed ({{ counts.completed }})</a>
+  <a class="{% if tab == 'history' %}on{% endif %}" href="?tab=history{% if q %}&q={{ q|urlencode }}{% endif %}">History ({{ counts.history }})</a>
+</div>
+
+<form class="filters" method="get">
+  <input type="hidden" name="tab" value="{{ tab }}">
+  <input name="q" value="{{ q }}" placeholder="Search by item, donor, care centre or category">
+  <button class="btn" type="submit">Search</button>
+  {% if q %}<a class="btn ghost" href="?tab={{ tab }}">Reset</a>{% endif %}
+</form>
+<p class="count">{{ page.paginator.count }} record{{ page.paginator.count|pluralize }}</p>
+
+<div class="box">
+  {% if page.object_list %}
+    <div class="table-wrap">
+      <table class="stack">
+        <thead>
+          <tr><th>Date</th><th>Type</th><th>Item</th><th>Qty</th><th>Donor</th><th>Care centre</th><th>Status</th><th>Done on</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for r in page %}
+            <tr>
+              <td data-label="Date">{{ r.created|date:"d M Y" }}</td>
+              <td data-label="Type">{{ r.type }}</td>
+              <td data-label="Item"><b>{{ r.title }}</b><small>{{ r.category }}</small></td>
+              <td data-label="Qty">{{ r.qty }} {{ r.unit }}</td>
+              <td data-label="Donor">{{ r.donor_name }}</td>
+              <td data-label="Care centre">{{ r.center.name }}</td>
+              <td data-label="Status"><span class="pill s-{{ r.status }}">{{ r.status_label }}</span></td>
+              <td data-label="Done on">{{ r.completed|date:"d M Y"|default:"-" }}</td>
+              <td>
+                <div class="actions">
+                  <a class="btn ghost small" href="{% url 'deal_detail' r.kind r.pk %}">Open</a>
+                  {% if role == 'donor' and r.bucket == 'completed' %}
+                    {% url 'certificate' r.kind r.pk as cert_url %}
+                    {% if cert_url %}<a class="btn gold small" href="{{ cert_url }}" target="_blank">Certificate</a>{% endif %}
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty">
+      {% if q %}No record matches your search.
+      {% elif tab == 'pending' %}Nothing is in progress right now.
+      {% elif tab == 'completed' %}No donation is completed yet.
+      {% else %}No records yet.{% endif %}
+    </p>
+  {% endif %}
+</div>
+
+{% if page.paginator.num_pages > 1 %}
+  <nav class="pager" aria-label="Pages">
+    {% if page.has_previous %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.previous_page_number }}">&larr; Prev</a>{% endif %}
+    {% for n in page.paginator.page_range %}{% if n == page.number %}<span class="on">{{ n }}</span>{% else %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ n }}">{{ n }}</a>{% endif %}{% endfor %}
+    {% if page.has_next %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+  </nav>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Donation history | KindBridge{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/history.css' %}">{% endblock %}
+
+{% block content %}
+<section class="page">
+  <div class="wrap">
+    <h1>Your donation history</h1>
+    <p class="sub">Every donation the administrator has approved.</p>
+
+    <div class="totals">
+      <div><b>{{ items|length }}</b><span>Approved donations</span></div>
+      <div><b>{{ total_units }}</b><span>Items given in total</span></div>
+    </div>
+
+    {% if items %}
+      <ul class="list">
+        {% for r in items %}
+          <li>
+            <div>
+              <b>{{ r.requirement.item_name }}, {{ r.quantity }}</b>
+              <span>To <a href="{% url 'center_detail' r.center.pk %}">{{ r.center.name }}</a>, {{ r.center.district }}</span>
+            </div>
+            <time>{{ r.updated_at|date:"d M Y" }}</time>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No approved donations yet. Once the administrator approves a request, it will appear here. <a href="{% url 'track' %}">Track your requests</a>.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

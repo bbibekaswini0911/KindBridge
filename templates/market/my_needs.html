@@ -1,0 +1,73 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}My needs | KindBridge{% endblock %}
+{% block page_title %}My needs{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/my-needs.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>My needs</h1>
+    <p>Requests you posted to the market. Donors see them and take them.</p>
+  </div>
+  <a class="btn" href="{% url 'post_need' %}">Post a need</a>
+</div>
+
+<form class="filters" method="get">
+  <input name="q" value="{{ q }}" placeholder="Search my needs">
+  <button class="btn" type="submit">Search</button>
+  {% if q %}<a class="btn ghost" href="{% url 'my_needs' %}">Reset</a>{% endif %}
+</form>
+<p class="count">{{ page.paginator.count }} request{{ page.paginator.count|pluralize }}</p>
+
+<div class="box">
+  {% if page.object_list %}
+    <div class="table-wrap">
+      <table class="stack">
+        <thead><tr><th>Photo</th><th>Item</th><th>Category</th><th>Quantity</th><th>Taken</th><th>Status</th><th>Posted</th><th></th></tr></thead>
+        <tbody>
+          {% for p in page %}
+            <tr>
+              <td data-label="Photo">
+                {% with photo=p.photos.all|first %}
+                  {% if photo %}<img class="need-thumb" src="{{ photo.image.url }}" alt="{{ p.title }}" loading="lazy">{% else %}<span class="need-thumb-placeholder">No photo</span>{% endif %}
+                {% endwith %}
+              </td>
+              <td data-label="Item"><b>{{ p.title }}</b></td>
+              <td data-label="Category">{{ p.get_category_display }}</td>
+              <td data-label="Quantity">{{ p.quantity }} {{ p.unit }}</td>
+              <td data-label="Taken">{{ p.taken }} ({{ p.percent }}%)</td>
+              <td data-label="Status">
+                {% if p.is_closed %}<span class="pill s-closed">Closed</span>
+                {% elif p.remaining == 0 %}<span class="pill s-reserved">Fully taken</span>
+                {% else %}<span class="pill s-open">Open</span>{% endif %}
+              </td>
+              <td data-label="Posted">{{ p.created_at|date:"d M Y" }}</td>
+              <td>
+                <div class="actions">
+                  {% url 'need_detail' p.pk as detail_url %}
+                  {% if detail_url %}<a class="btn ghost small" href="{{ detail_url }}">View</a>{% endif %}
+                  <form method="post" action="{% url 'close_need' p.pk %}">
+                    {% csrf_token %}
+                    <button class="btn ghost small{% if not p.is_closed %} danger{% endif %}" type="submit">{% if p.is_closed %}Reopen{% else %}Close{% endif %}</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty">You have not posted anything yet. <a href="{% url 'post_need' %}">Post your first need</a>.</p>
+  {% endif %}
+</div>
+
+{% if page.paginator.num_pages > 1 %}
+  <nav class="pager" aria-label="Pages">
+    {% if page.has_previous %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.previous_page_number }}">&larr; Prev</a>{% endif %}
+    {% for n in page.paginator.page_range %}{% if n == page.number %}<span class="on">{{ n }}</span>{% else %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ n }}">{{ n }}</a>{% endif %}{% endfor %}
+    {% if page.has_next %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+  </nav>
+{% endif %}
+{% endblock %}

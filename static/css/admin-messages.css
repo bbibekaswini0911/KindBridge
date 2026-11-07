@@ -1,0 +1,287 @@
+/* ==========================================
+   KIND BRIDGE - ADMIN MESSAGES
+========================================== */
+
+/* PAGE HEADING */
+
+.ph-row {
+    margin-bottom: 25px;
+}
+
+.ph-row h1 {
+    font-size: clamp(25px, 3vw, 36px);
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.ph-row p {
+    color: var(--mut);
+    font-size: 14px;
+    margin: 0;
+}
+
+
+/* ==========================================
+   MESSAGE TABS
+========================================== */
+
+.tabs-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 6px;
+    margin-bottom: 24px;
+
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.tabs-row a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 11px 22px;
+
+    color: var(--mut);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+
+    border-radius: 8px;
+    transition: all .25s ease;
+}
+
+.tabs-row a:hover {
+    color: var(--tx);
+    background: rgba(255,255,255,.04);
+}
+
+.tabs-row a.on {
+    color: #fff;
+    background: linear-gradient(135deg, #e64b62, #a51f39);
+    box-shadow: 0 4px 12px rgba(230,75,98,.16);
+}
+
+
+/* ==========================================
+   MESSAGE CARDS
+========================================== */
+
+.msg {
+    position: relative;
+
+    padding: 23px 25px;
+    margin-bottom: 16px;
+
+    background: linear-gradient(145deg, #191315, #141112);
+    border: 1px solid var(--line);
+    border-radius: 15px;
+
+    transition: all .25s ease;
+}
+
+.msg:hover {
+    border-color: rgba(230,75,98,.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0,0,0,.16);
+}
+
+
+/* UNREAD MESSAGE */
+
+.msg.new {
+    border-left: 4px solid var(--gold);
+    background: linear-gradient(
+        120deg,
+        rgba(242,163,58,.07),
+        #171213 55%
+    );
+}
+
+
+/* ==========================================
+   MESSAGE HEADER
+========================================== */
+
+.msg-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--line);
+}
+
+.msg-head > div {
+    min-width: 0;
+}
+
+.msg h3 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--tx);
+    margin: 0 0 7px;
+}
+
+
+/* EMAIL AND DATE */
+
+.msg .meta {
+    color: var(--mut);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.msg a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.msg a:hover {
+    color: #ffd078;
+    text-decoration: underline;
+}
+
+
+/* ==========================================
+   MESSAGE CONTENT
+========================================== */
+
+.msg > p {
+    margin: 17px 0 0;
+
+    color: var(--tx);
+    font-size: 14px;
+    line-height: 1.8;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ==========================================
+   MARK READ / UNREAD BUTTON
+========================================== */
+
+.msg form {
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.msg form .btn {
+    padding: 9px 17px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all .25s ease;
+}
+
+.msg form .btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty {
+    padding: 45px 20px;
+    margin: 15px 0;
+
+    text-align: center;
+
+    background: var(--panel);
+    border: 1px dashed var(--line);
+    border-radius: 14px;
+
+    color: var(--mut);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+/* ==========================================
+   PAGINATION
+========================================== */
+
+.pager {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 25px 0;
+}
+
+.pager a,
+.pager span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+
+    color: var(--mut);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+
+    border: 1px solid var(--line);
+    border-radius: 8px;
+
+    transition: .2s ease;
+}
+
+.pager a:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+}
+
+.pager .on {
+    color: white;
+    background: linear-gradient(135deg, #e64b62, #a51f39);
+    border-color: transparent;
+}
+
+
+/* ==========================================
+   RESPONSIVE DESIGN
+========================================== */
+
+@media(max-width: 650px) {
+
+    .msg {
+        padding: 18px;
+    }
+
+    .msg-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .msg form {
+        width: 100%;
+    }
+
+    .msg form .btn {
+        width: 100%;
+    }
+
+    .tabs-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .tabs-row a {
+        padding: 10px;
+        font-size: 13px;
+    }
+}

@@ -1,0 +1,56 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}My items | KindBridge{% endblock %}
+{% block page_title %}My items{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/my-offers.css' %}?v=2">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>My items</h1>
+    <p>Items you published. Open one to see the care centres waiting in line.</p>
+  </div>
+  <a class="btn" href="{% url 'publish_offer' %}">Publish an item</a>
+</div>
+
+<form class="filters" method="get">
+  <input name="q" value="{{ q }}" placeholder="Search my items">
+  <button class="btn" type="submit">Search</button>
+  {% if q %}<a class="btn ghost" href="{% url 'my_offers' %}">Reset</a>{% endif %}
+</form>
+<p class="count">{{ page.paginator.count }} item{{ page.paginator.count|pluralize }}</p>
+
+<div class="box">
+  {% if page.object_list %}
+    <div class="table-wrap">
+      <table class="stack">
+        <thead><tr><th>Item</th><th>Category</th><th>Quantity</th><th>City</th><th>Waiting centres</th><th>Status</th><th>Published</th><th></th></tr></thead>
+        <tbody>
+          {% for o in page %}
+            <tr>
+              <td data-label="Item"><b>{{ o.title }}</b></td>
+              <td data-label="Category">{{ o.get_category_display }}</td>
+              <td data-label="Quantity">{{ o.quantity }}</td>
+              <td data-label="City">{{ o.city }}</td>
+              <td data-label="Waiting centres">{{ o.waiting }}</td>
+              <td data-label="Status"><span class="pill s-{{ o.status }}">{{ o.get_status_display }}</span></td>
+              <td data-label="Published">{{ o.created_at|date:"d M Y" }}</td>
+              <td><a class="btn ghost small" href="{% url 'offer_detail' o.pk %}">Open</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty">You have not published anything yet. <a href="{% url 'publish_offer' %}">Publish your first item</a>.</p>
+  {% endif %}
+</div>
+
+{% if page.paginator.num_pages > 1 %}
+  <nav class="pager" aria-label="Pages">
+    {% if page.has_previous %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.previous_page_number }}">&larr; Prev</a>{% endif %}
+    {% for n in page.paginator.page_range %}{% if n == page.number %}<span class="on">{{ n }}</span>{% else %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ n }}">{{ n }}</a>{% endif %}{% endfor %}
+    {% if page.has_next %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+  </nav>
+{% endif %}
+{% endblock %}

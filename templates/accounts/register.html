@@ -1,0 +1,46 @@
+{% extends 'layouts/auth.html' %}
+{% load static %}
+{% block title %}Register | KindBridge{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/register.css' %}">{% endblock %}
+
+{% block content %}
+<section class="reg">
+  <div class="reg-box">
+
+    <aside class="reg-side">
+      <span class="reg-mark">&#9829;</span>
+      <h2>Join the circle of kindness</h2>
+      <p>Create a donor account and help homes that need you.</p>
+      <ul>
+        <li>Find orphanages, old age homes and care centers</li>
+        <li>See exactly what each center needs</li>
+        <li>Send a donation request in a minute</li>
+        <li>Track every request until it is approved</li>
+      </ul>
+      <span class="reg-od">ଦାନ</span>
+    </aside>
+
+    <div class="reg-main">
+      <h1>Create your account</h1>
+      <p class="reg-sub">It takes less than a minute.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="reg-grid">
+          {% for field in form %}
+            <div class="reg-field">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.errors %}<p class="reg-err">{{ field.errors|join:' ' }}</p>{% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <button class="btn reg-btn" type="submit">Create account</button>
+        <p class="reg-alt">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

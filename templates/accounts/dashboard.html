@@ -1,0 +1,230 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+
+{% block title %}My Dashboard | KindBridge{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=3">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page">
+  <div class="wrap">
+
+    <!-- Dashboard Header -->
+    <div class="ph-row">
+      <div>
+        <h1>Welcome, {{ user.first_name|default:user.username }}</h1>
+        <p class="sub">
+          Care centres are asking for these items. Take one and help today.
+        </p>
+      </div>
+
+      <a class="btn" href="{% url 'need_board' %}">
+        See All Needs
+      </a>
+    </div>
+
+
+    <!-- Needs From Care Centres -->
+    <div class="box">
+      <h2>Needs From Care Centres</h2>
+
+      <div class="cards">
+
+        {% for p in needs %}
+
+          <article class="card">
+
+            <!-- Need Image -->
+            <a class="card-img" href="{% url 'need_detail' p.pk %}">
+
+              {% if p.cover %}
+                <img
+                  src="{{ p.cover.image.url }}"
+                  alt="{{ p.title }}"
+                  loading="lazy"
+                >
+              {% else %}
+                <div class="ph">{{ p.title|first }}</div>
+              {% endif %}
+
+            </a>
+
+
+            <!-- Need Details -->
+            <div class="card-body">
+
+              <span class="chip">
+                {{ p.get_category_display }}
+              </span>
+
+              <h3>{{ p.title }}</h3>
+
+              <p class="meta">
+                {{ p.center.name }}, {{ p.center.district }}
+              </p>
+
+
+              <!-- Progress Bar -->
+              <div class="bar">
+                <i style="--w: {{ p.percent }}%; width: var(--w)"></i>
+              </div>
+
+              <p class="meta">
+                {{ p.remaining }} {{ p.unit }} still needed
+              </p>
+
+
+              <!-- View Button -->
+              <a
+                class="btn ghost"
+                href="{% url 'need_detail' p.pk %}"
+              >
+                View and Take
+              </a>
+
+            </div>
+
+          </article>
+
+        {% empty %}
+
+          <div class="empty" style="grid-column: 1 / -1;">
+            No care centre has posted a need yet.
+            Please check again soon.
+          </div>
+
+        {% endfor %}
+
+      </div>
+    </div>
+
+
+    <!-- Donor Statistics -->
+    <div class="stats">
+
+      <div class="stat">
+        <b>{{ stats.taken }}</b>
+        <span>Requests I Took (In Progress)</span>
+      </div>
+
+      <div class="stat">
+        <b>{{ stats.completed }}</b>
+        <span>Donations Completed</span>
+      </div>
+
+      <div class="stat">
+        <b>{{ stats.items }}</b>
+        <span>Items I Published</span>
+      </div>
+
+      <div class="stat">
+        <b>{{ stats.waiting }}</b>
+        <span>Centres Waiting for My Answer</span>
+      </div>
+
+    </div>
+
+
+    <!-- Quick Links -->
+    <div class="quick">
+
+      <a class="btn" href="{% url 'need_board' %}">
+        Explore Care Centre Needs
+      </a>
+
+      <a class="btn ghost" href="{% url 'track' %}">
+        Track Requests
+      </a>
+
+      <a class="btn ghost" href="{% url 'history' %}">
+        Donation History
+      </a>
+
+      <a class="btn ghost" href="{% url 'profile' %}">
+        Update Profile
+      </a>
+
+    </div>
+
+
+    <!-- Recent Donation Requests -->
+    <div class="box">
+
+      <h2>Recent Requests</h2>
+
+      {% if recent %}
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Care Centre</th>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+
+              {% for r in recent %}
+
+                <tr>
+
+                  <td data-label="Care Centre">
+                    {{ r.center.name }}
+                  </td>
+
+                  <td data-label="Item">
+                    {{ r.requirement.item_name }}
+                  </td>
+
+                  <td data-label="Quantity">
+                    {{ r.quantity }}
+                  </td>
+
+                  <td data-label="Status">
+                    <span class="pill {{ r.status }}">
+                      {{ r.get_status_display }}
+                    </span>
+                  </td>
+
+                  <td data-label="Date">
+                    {{ r.created_at|date:"d M Y" }}
+                  </td>
+
+                </tr>
+
+              {% endfor %}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      {% else %}
+
+        <p class="empty">
+          You have not sent any request yet.
+          <a href="{% url 'explore' %}">Find a care centre</a>
+          to start.
+        </p>
+
+      {% endif %}
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

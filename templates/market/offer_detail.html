@@ -1,0 +1,114 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}{{ offer.title }} | KindBridge{% endblock %}
+{% block page_title %}Item details{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/offer-detail.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<a class="back" href="#" onclick="history.back();return false;">&larr; Back</a>
+
+<div class="od-grid">
+  <div class="gal">
+    {% if offer.photos.all %}
+      <div class="main"><img id="mainImg" src="{{ offer.cover.image.url }}" alt="{{ offer.title }}"></div>
+      {% if offer.photos.all|length > 1 %}
+        <div class="thumbs">{% for ph in offer.photos.all %}<img src="{{ ph.image.url }}" alt="" data-full="{{ ph.image.url }}">{% endfor %}</div>
+      {% endif %}
+    {% else %}
+      <div class="main ph">{{ offer.title|first }}</div>
+    {% endif %}
+  </div>
+
+  <div class="info">
+    <span class="chip">{{ offer.get_category_display }}</span>
+    <span class="pill s-{{ offer.status }}">{{ offer.get_status_display }}</span>
+    <h1>{{ offer.title }}</h1>
+    <p class="meta">{{ offer.quantity }} available &middot; {{ offer.city }} &middot; published {{ offer.created_at|date:"d M Y" }}</p>
+    <p class="desc">{{ offer.description|linebreaksbr }}</p>
+    {% if owner %}
+      <p class="meta">This is your item.</p>
+      {% if offer.status == 'open' %}
+        <form method="post" action="{% url 'offer_close' offer.pk %}" onsubmit="return confirm('Close this item? Waiting centres will be declined.');">
+          {% csrf_token %}
+          <button class="btn ghost danger small" type="submit">Close this item</button>
+        </form>
+      {% endif %}
+    {% else %}
+      <p class="meta">Offered by {{ offer.donor.user.first_name|default:"a donor" }}. The exact address is shared only after the donor accepts you.</p>
+    {% endif %}
+
+    {# ----- care centre: ask for the item ----- #}
+    {% if role == 'center' %}
+      {% if my_claim %}
+        <div class="note ok">
+          {% if my_claim.status == 'waiting' %}
+            You asked for this item. You are number {{ position }} in line.
+          {% elif my_claim.status == 'accepted' %}
+            The donor accepted you. <a href="{% url 'deal_detail' 'claim' my_claim.pk %}">Open the donation</a>
+          {% elif my_claim.status == 'completed' %}
+            Received. <a href="{% url 'deal_detail' 'claim' my_claim.pk %}">Open the donation</a>
+          {% elif my_claim.status == 'declined' %}
+            The donor chose another centre or declined this request.
+          {% else %}
+            Your request is cancelled.
+          {% endif %}
+        </div>
+      {% elif offer.status == 'open' %}
+        <form class="take" method="post" action="{% url 'claim_offer' offer.pk %}">
+          {% csrf_token %}
+          <h3>I want this</h3>
+          <div class="field">
+            <label for="msg">Tell the donor why your centre needs it (optional)</label>
+            <textarea id="msg" name="message" rows="3"></textarea>
+          </div>
+          <button class="btn full" type="submit">Ask for this item</button>
+          <p class="hint">First come, first served. The donor reads the details of the centre at the front of the line and decides.</p>
+        </form>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{# ----- donor: the line of care centres ----- #}
+{% if claims is not None and owner %}
+<div class="box">
+  <h2>Care centres in line</h2>
+  {% for c in claims %}
+    <article class="claim {% if first_waiting and c.pk == first_waiting.pk %}front{% endif %}">
+      <div class="claim-head">
+        <h3>
+          {% if c.status == 'waiting' %}{% if first_waiting and c.pk == first_waiting.pk %}At the front: {% endif %}{% endif %}
+          {{ c.center.name }}
+        </h3>
+        <span class="pill s-{{ c.status }}">{{ c.get_status_display }}</span>
+      </div>
+      <p class="meta">{{ c.center.get_center_type_display }}, {{ c.center.district }}, {{ c.center.state }} &middot; asked on {{ c.created_at|date:"d M Y, h:i A" }}</p>
+      {% if c.message %}<p class="note"><b>Message:</b> {{ c.message }}</p>{% endif %}
+
+      {% if first_waiting and c.pk == first_waiting.pk %}
+        <p>{{ c.center.description|linebreaksbr|truncatechars:240 }}</p>
+        <p class="meta">Address: {{ c.center.address }}{% if c.center.phone %} &middot; Phone: {{ c.center.phone }}{% endif %}</p>
+        <div class="actions">
+          <form method="post" action="{% url 'claim_accept' c.pk %}">
+            {% csrf_token %}
+            <button class="btn" type="submit">Accept this centre</button>
+          </form>
+          <form method="post" action="{% url 'claim_decline' c.pk %}" onsubmit="return confirm('Decline this centre?');">
+            {% csrf_token %}
+            <button class="btn ghost danger" type="submit">Decline</button>
+          </form>
+          <a class="btn ghost small" href="{% url 'center_detail' c.center.pk %}" target="_blank">View centre page</a>
+        </div>
+      {% elif c.status == 'accepted' or c.status == 'completed' %}
+        <a class="btn ghost small" href="{% url 'deal_detail' 'claim' c.pk %}">Open the donation</a>
+      {% endif %}
+    </article>
+  {% empty %}
+    <p class="empty">No care centre has asked for this item yet. You will see the line here.</p>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/gallery.js' %}"></script>{% endblock %}
+

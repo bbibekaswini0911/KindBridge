@@ -1,0 +1,28 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Centre profile | KindBridge{% endblock %}
+{% block page_title %}Centre profile{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/centre-profile.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>{{ center.name }}</h1>
+    <p>{{ center.get_center_type_display }}, {{ center.district }}, {{ center.state }}. The name and type are set at registration; everything else you can update.</p>
+  </div>
+</div>
+
+<form class="fbox" method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+  <div class="fgrid">
+    {% for field in form %}
+      <div class="field {% if field.name == 'description' or field.name == 'image' or field.name == 'address' %}wide{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<p class="err">{{ field.errors|join:' ' }}</p>{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <button class="btn" type="submit">Save changes</button>
+</form>
+{% endblock %}

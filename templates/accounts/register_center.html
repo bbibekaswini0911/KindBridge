@@ -1,0 +1,48 @@
+{% extends 'layouts/auth.html' %}
+{% load static %}
+{% block title %}Register your care center | KindBridge{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/register-center.css' %}?v=1">{% endblock %}
+
+{% block content %}
+<section class="reg">
+  <div class="reg-box">
+
+    <aside class="reg-side">
+      <span class="reg-mark">&#9829;</span>
+      <h2>Reach donors who want to help</h2>
+      <p>Register your orphanage, old age home or care center.</p>
+      <ul>
+        <li>List what your center needs, with photos</li>
+        <li>See items donors want to give away</li>
+        <li>Request them, first come first served</li>
+        <li>Download your records any time</li>
+      </ul>
+      <p class="reg-note">The administrator checks every center before it goes live.</p>
+      <span class="reg-od">ଦାନ</span>
+    </aside>
+
+    <div class="reg-main">
+      <h1>Register your care center</h1>
+      <p class="reg-sub">You can log in once the administrator approves it.</p>
+
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        <div class="reg-grid">
+          {% for field in form %}
+            <div class="reg-field">
+              <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.name == 'image' %}<p class="reg-hint">Optional. JPG, PNG or WebP image of your care center.</p>{% endif %}
+              {% if field.errors %}<p class="reg-err">{{ field.errors|join:' ' }}</p>{% endif %}
+            </div>
+          {% endfor %}
+        </div>
+
+        <button class="btn reg-btn" type="submit">Submit for approval</button>
+        <p class="reg-alt">Already registered? <a href="{% url 'login' %}">Log in</a></p>
+      </form>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

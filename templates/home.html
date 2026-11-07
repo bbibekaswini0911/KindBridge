@@ -1,0 +1,394 @@
+{% extends 'layouts/public.html' %}
+{% load static %}
+{% block title %}KindBridge | Community Donation and Support Platform{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}?v=9">
+<link rel="stylesheet" href="{% static 'css/hero-fx.css' %}?v=4">
+{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-fx" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+    <span class="fx-heart" style="--x:8%;--s:16px;--d:0s;--t:13s">&#9829;</span>
+    <span class="fx-heart" style="--x:24%;--s:20px;--d:4s;--t:15s">&#9829;</span>
+    <span class="fx-heart" style="--x:42%;--s:14px;--d:8s;--t:12s">&#9829;</span>
+    <span class="fx-heart" style="--x:60%;--s:22px;--d:2s;--t:16s">&#9829;</span>
+    <span class="fx-heart" style="--x:78%;--s:15px;--d:6s;--t:13s">&#9829;</span>
+    <span class="fx-heart" style="--x:92%;--s:18px;--d:10s;--t:14s">&#9829;</span>
+  </div>
+
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="badge">Community Donation and Support Platform</span>
+      <h1>Give with trust,<span class="rot" id="rot">to an orphanage near you</span></h1>
+      <p class="lead" id="lead">See exactly what each home needs, donate the items, and follow your request until it is approved.</p>
+      <div class="tags">
+        <a href="{% url 'search' %}?type=orphanage">Orphanages</a>
+        <a href="{% url 'search' %}?type=old_age_home">Old age homes</a>
+        <a href="{% url 'search' %}?type=care_center">Care centers</a>
+        <a href="{% url 'search' %}?need=food">Food</a>
+        <a href="{% url 'search' %}?need=clothes">Clothes</a>
+        <a href="{% url 'search' %}?need=medicine">Medicine</a>
+        <a href="{% url 'search' %}?need=books">Books</a>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <div class="fx-chip c1"><i>&#10003;</i><span>Request approved</span></div>
+      <div class="fx-chip c2"><i>&#9829;</i><span>New need: Rice, 80 kg</span></div>
+
+      <form class="search-card" method="get" action="{% url 'search' %}">
+        <h3>Find a care center</h3>
+        <p>Choose where you want your help to go.</p>
+        <label for="f-type">Care center type</label>
+        <select id="f-type" name="type">
+          <option value="">All types</option>
+          {% for value, label in types %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+        </select>
+        <label for="f-need">Donation need</label>
+        <select id="f-need" name="need">
+          <option value="">Any need</option>
+          {% for value, label in categories %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+        </select>
+        <label for="f-state">State</label>
+        <input id="f-state" name="state" placeholder="For example, Odisha">
+        <label for="f-district">District or center name</label>
+        <input id="f-district" name="district" placeholder="For example, Khordha">
+        <button class="btn full" type="submit">Search care centers</button>
+      </form>
+    </div>
+  </div>
+
+  <a class="scroll-cue" href="#experience" aria-label="Scroll down"><span></span></a>
+</section>
+
+<!-- COMPLETE EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Complete donation experience</span>
+      <h2>From finding a home to seeing your help delivered</h2>
+      <p>Everything a donor needs, in one place.</p>
+    </div>
+    <div class="exp">
+      <div class="exp-card"><b>01</b><h3>Find a center</h3><p>Search orphanages, old age homes and care centers by type, need and place.</p></div>
+      <div class="exp-card"><b>02</b><h3>See real needs</h3><p>Each center lists the exact items it requires and how many.</p></div>
+      <div class="exp-card"><b>03</b><h3>Send a request</h3><p>Pick items, add quantity and a message, then submit in a minute.</p></div>
+      <div class="exp-card"><b>04</b><h3>Follow the status</h3><p>Pending, Approved or Rejected, always visible on your dashboard.</p></div>
+    </div>
+    <div class="strip">
+      <h4>Everything you need</h4>
+      <div>
+        <span>Orphanages</span><span>Old age homes</span><span>Care centers</span><span>Food</span>
+        <span>Clothes</span><span>Medicine</span><span>Books</span><span>Admin reviewed</span><span>Donation history</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LATEST NEEDS FROM CARE CENTRES -->
+<section class="section tight" id="needs">
+  <div class="wrap">
+    <div class="head left row">
+      <div>
+        <span class="eyebrow">Needs market</span>
+        <h2>What care centres need right now</h2>
+        <p>Posted by care centres. Log in as a donor, take a request and help.</p>
+      </div>
+      <a class="btn ghost" href="{% if user.is_authenticated %}{% url 'need_board' %}{% else %}{% url 'login' %}{% endif %}">See all needs</a>
+    </div>
+    <div class="cards">
+      {% for p in needs %}
+        <article class="card">
+          <a class="card-img" href="{% url 'need_detail' p.pk %}">
+            {% if p.cover %}<img src="{{ p.cover.image.url }}" alt="{{ p.title }}" loading="lazy">{% else %}<div class="ph">{{ p.title|first }}</div>{% endif %}
+          </a>
+          <div class="card-body">
+            <span class="chip">{{ p.get_category_display }}</span>
+            <h3>{{ p.title }}</h3>
+            <p class="loc">{{ p.center.name }}, {{ p.center.district }}</p>
+            <div class="bar"><i style="--w: {{ p.percent }}%; width: var(--w)"></i>
+            <p class="loc">{{ p.remaining }} {{ p.unit }} still needed</p>
+            <a class="btn ghost" href="{% url 'need_detail' p.pk %}">View request</a>
+          </div>
+        </article>
+      {% empty %}
+        <div class="empty">No care centre has posted a need yet.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- CARE CENTERS -->
+<section class="section tight" id="centers">
+  <div class="wrap">
+    <div class="head left row">
+      <div>
+        <span class="eyebrow">Care centers</span>
+        <h2>Centers that need you</h2>
+        <p>Each center lists the items it requires. Pick one and send a request.</p>
+      </div>
+      <a class="btn ghost" href="{% if user.is_authenticated %}{% url 'explore' %}{% else %}{% url 'search' %}{% endif %}">Browse all centers</a>
+    </div>
+    <div class="cards">
+      {% for c in centers %}
+        <article class="card">
+          <div class="card-img">
+            {% if c.image %}<img src="{{ c.image.url }}" alt="{{ c.name }}" loading="lazy">{% else %}<div class="ph">{{ c.name|first }}</div>{% endif %}
+          </div>
+          <div class="card-body">
+            <span class="chip">{{ c.get_center_type_display }}</span>
+            <h3>{{ c.name }}</h3>
+            <p class="loc">{{ c.district }}, {{ c.state }}</p>
+            <div class="needs">{% for r in c.requirements.all|slice:":3" %}<span>{{ r.item_name }}</span>{% endfor %}</div>
+            <a class="btn ghost" href="{% url 'center_detail' c.pk %}">View needs</a>
+          </div>
+        </article>
+      {% empty %}
+        <div class="empty">No care centers yet. Add some from the admin panel.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES + STATS -->
+<section class="section">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Features</span>
+      <h2>Built around the donor and the center</h2>
+    </div>
+    <div class="feat-wrap">
+      <div class="feat-col">
+        <div class="feat"><h3>Smart search</h3><p>Filter by type, need, state and district.</p></div>
+        <div class="feat"><h3>Live requirements</h3><p>Centers keep their needs up to date.</p></div>
+        <div class="feat"><h3>Easy requests</h3><p>Choose items and quantity in a few clicks.</p></div>
+      </div>
+      <div class="orb" aria-hidden="true"><span>&#9829;</span></div>
+      <div class="feat-col">
+        <div class="feat"><h3>Status tracking</h3><p>See Pending, Approved or Rejected at once.</p></div>
+        <div class="feat"><h3>Donation history</h3><p>Every past donation in one list.</p></div>
+        <div class="feat"><h3>Admin control</h3><p>One panel to manage centers, donors and requests.</p></div>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat"><b data-n="{{ stats.centers }}">0</b><span>Care centers</span></div>
+      <div class="stat"><b data-n="{{ stats.donors }}">0</b><span>Registered donors</span></div>
+      <div class="stat"><b data-n="{{ stats.needs }}">0</b><span>Needs posted by care centres</span></div>
+      <div class="stat"><b data-n="{{ stats.completed }}">0</b><span>Donations completed</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="section tight">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Why KindBridge</span>
+      <h2>Why donors and centers choose us</h2>
+    </div>
+    <div class="why">
+      <div class="why-card"><i>1</i><h3>Transparent needs</h3><p>No guessing. You give what the center actually asked for.</p></div>
+      <div class="why-card"><i>2</i><h3>Admin reviewed</h3><p>Every request is checked and marked by the administrator.</p></div>
+      <div class="why-card"><i>3</i><h3>Simple donation</h3><p>Find, choose and submit without long forms.</p></div>
+      <div class="why-card"><i>4</i><h3>Track everything</h3><p>Your request never disappears. You can always see its status.</p></div>
+      <div class="why-card"><i>5</i><h3>Secure accounts</h3><p>Passwords are hashed and every form is protected.</p></div>
+      <div class="why-card"><i>6</i><h3>For the community</h3><p>Built to connect kind people with homes that need them.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="section" id="process">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Process</span>
+      <h2>How KindBridge works, step by step</h2>
+    </div>
+    <div class="process">
+      <div class="p-step"><span>1</span><h3>Register</h3><p>Create your donor account.</p></div>
+      <div class="p-step"><span>2</span><h3>Log in</h3><p>Open your donor dashboard.</p></div>
+      <div class="p-step"><span>3</span><h3>Explore</h3><p>Browse all care centers.</p></div>
+      <div class="p-step"><span>4</span><h3>Filter</h3><p>Narrow by type, need or place.</p></div>
+      <div class="p-step"><span>5</span><h3>View needs</h3><p>Read details and requirements.</p></div>
+      <div class="p-step"><span>6</span><h3>Choose items</h3><p>Select center, items and quantity.</p></div>
+      <div class="p-step"><span>7</span><h3>Submit</h3><p>Send your request and get confirmation.</p></div>
+      <div class="p-step"><span>8</span><h3>Track</h3><p>Follow status and view history.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRACKER -->
+<section class="section tight">
+  <div class="wrap two">
+    <div>
+      <span class="eyebrow">Request tracking</span>
+      <h2>Know where every donation stands</h2>
+      <p class="muted">After you submit, the care center reviews your request. You see the result on your dashboard, with no phone calls needed.</p>
+      <div class="pills"><em class="pill p">Pending</em><em class="pill a">Approved</em><em class="pill r">Rejected</em></div>
+    </div>
+    <div class="track-card">
+      <div class="track-top"><div><b>Rice, 50 kg</b><small>To Asha Kiran Balashram (sample)</small></div><em class="pill a">Approved</em></div>
+      <ol class="track-steps">
+        <li class="done"><span>&#10003;</span>Submitted</li>
+        <li class="done"><span>&#10003;</span>Pending review</li>
+        <li class="done"><span>&#10003;</span>Reviewed</li>
+        <li class="done"><span>&#10003;</span>Approved</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARDS -->
+<section class="section">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Dashboards</span>
+      <h2>One place for donors, one for care centers</h2>
+    </div>
+    <div class="dash">
+      <div class="dash-card">
+        <h3>Donor dashboard</h3>
+        <ul>
+          <li>Explore and filter care centers</li>
+          <li>Send donation requests</li>
+          <li>Track Pending, Approved or Rejected</li>
+          <li>View donation history</li>
+          <li>Update profile</li>
+        </ul>
+      </div>
+      <div class="dash-card">
+        <h3>Care center dashboard</h3>
+        <ul>
+          <li>Manage your requests</li>
+          <li>See Pending, Completed and history</li>
+          <li>View donor details</li>
+          <li>Search your records</li>
+          <li>Download your data</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section tight">
+  <div class="wrap head">
+    <span class="eyebrow">Voices</span>
+    <h2>What people say (sample)</h2>
+  </div>
+  <div class="marquee"><div class="marquee-track">
+    <blockquote>I could see exactly what the home needed. No guesswork.<cite>Donor, Bhubaneswar</cite></blockquote>
+    <blockquote>Tracking my request made me trust the whole process.<cite>Donor, Cuttack</cite></blockquote>
+    <blockquote>We update our needs once and donors find us easily.<cite>Care center manager</cite></blockquote>
+    <blockquote>Simple, clean and quick. Donating took two minutes.<cite>Donor, Puri</cite></blockquote>
+    <blockquote>Our requests are all in one place now.<cite>Coordinator</cite></blockquote>
+  </div></div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap narrow">
+    <div class="head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Questions people ask</h2>
+    </div>
+    <div class="tabs" role="tablist">
+      <button type="button" class="on" data-tab="general">General</button>
+      <button type="button" data-tab="donating">Donating</button>
+      <button type="button" data-tab="admin">Care centers</button>
+    </div>
+    <div class="panel on" id="tab-general">
+      <details><summary>What is KindBridge?</summary><p>A platform that connects donors with orphanages, old age homes and care centers.</p></details>
+      <details><summary>Is it free to use?</summary><p>Yes. Registering and sending requests costs nothing.</p></details>
+    </div>
+    <div class="panel" id="tab-donating">
+      <details><summary>Do I need an account to donate?</summary><p>Yes. Register once, then log in to send and track requests.</p></details>
+      <details><summary>What can I donate?</summary><p>Whatever the center lists as a requirement, such as food, clothes, medicine or books.</p></details>
+      <details><summary>How do I know my request was accepted?</summary><p>Your dashboard shows Pending, Approved or Rejected for every request.</p></details>
+    </div>
+    <div class="panel" id="tab-admin">
+      <details><summary>How does a care center join?</summary><p>Register your center. The administrator checks it, and you can log in once it is approved.</p></details>
+      <details><summary>Who approves requests?</summary><p>The care center reviews each request and updates its status.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + CONTACT -->
+<section class="section tight" id="contact">
+  <div class="wrap cta">
+    <div>
+      <h2>Small help, <span class="od">ସେବା</span> that reaches a home</h2>
+      <p>Join KindBridge and connect with the people who need your support today.</p>
+      {% if user.is_authenticated %}
+        <a class="btn gold" href="{% url 'explore' %}">Browse care centers</a>
+      {% else %}
+        <a class="btn gold" href="{% url 'register' %}">Become a donor</a>
+      {% endif %}
+    </div>
+    <form class="contact" id="contactSend" method="post" action="{% url 'contact_submit' %}">
+      {% csrf_token %}
+      <h3>Contact us</h3>
+      <input name="name" placeholder="Your name" required maxlength="100">
+      <input name="email" type="email" placeholder="Your email" required>
+      <textarea name="message" rows="3" placeholder="Your message" required></textarea>
+      <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn full" type="submit">Send message</button>
+    </form>
+
+  </div>
+</section>
+
+<!-- FLOATING CONTACT BUTTON -->
+<div class="fab" id="fab">
+  <div class="fab-panel" id="fabPanel">
+    <h4>Contact us</h4>
+    <p>We would love to hear from you.</p>
+    <a class="line" href="tel:+919498438248">+91 94984 38248</a>
+    <a class="line" href="mailto:kindbridge123@gmail.com">kindbridge123@gmail.com</a>
+    <a class="btn full" href="#contact" id="fabGo">Send us a message</a>
+  </div>
+  <button class="fab-btn" id="fabBtn" type="button" aria-expanded="false" aria-label="Contact us. You can drag this button.">
+    <span class="fab-ic">&#9993;</span><span>Contact us</span>
+  </button>
+</div>
+{% endblock %}
+{% block footer %}
+<footer class="site-footer">
+  <div class="wrap foot-row">
+    <div class="foot-brand">
+      <div class="brand"><span class="mark">&#9829;</span><span class="name">Kind<b>Bridge</b></span></div>
+      <p>Connecting donors with orphanages, old age homes and care centers.</p>
+    </div>
+
+    <nav class="foot-links" aria-label="Footer">
+      <a href="{% url 'search' %}">Care centers</a>
+      <a href="#process">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a href="tel:+919498438248">+91 94984 38248</a>
+      <a href="mailto:kindbridge123@gmail.com">kindbridge123@gmail.com</a>
+    </nav>
+
+    <div class="foot-socials">
+      <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    </div>
+  </div>
+
+  <div class="wrap foot-bottom">
+    <p><b>&copy; 2026 KindBridge.</b> All rights reserved.</p>
+  </div>
+</footer>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'js/home.js' %}"></script>
+<script src="{% static 'js/hero-fx.js' %}"></script>
+{% endblock %}

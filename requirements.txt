@@ -1,0 +1,7 @@
+Django==6.0.8
+mysqlclient==2.2.8
+Pillow==13.0.0
+gunicorn
+whitenoise
+
+python-dotenv

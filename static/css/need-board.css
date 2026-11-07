@@ -1,0 +1,320 @@
+/* =====================================================
+   KIND BRIDGE — NEEDS MARKET
+   Page-specific styling
+===================================================== */
+
+/* Page heading */
+.app-content > .ph-row {
+    margin: 2px 0 26px;
+}
+
+.app-content > .ph-row h1 {
+    margin: 0 0 10px;
+    font: 700 clamp(28px, 3vw, 36px)/1.2 Poppins, sans-serif;
+    letter-spacing: -.8px;
+    color: var(--tx);
+}
+
+.app-content > .ph-row p {
+    max-width: 760px;
+    margin: 0;
+    color: var(--mut);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Search and filters */
+.app-content form.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 24px 0 22px;
+    padding: 17px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.app-content form.filters input,
+.app-content form.filters select {
+    flex: 1 1 210px;
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+    box-sizing: border-box;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    outline: none;
+    background: var(--panel2);
+    color: var(--tx);
+    font: 14px Inter, sans-serif;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.app-content form.filters input::placeholder {
+    color: var(--mut);
+    opacity: .85;
+}
+
+.app-content form.filters input:focus,
+.app-content form.filters select:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px var(--glow1);
+}
+
+.app-content form.filters select {
+    flex: 0 1 190px;
+    cursor: pointer;
+}
+
+.app-content form.filters select option {
+    background: var(--panel);
+    color: var(--tx);
+}
+
+.app-content form.filters .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 25px;
+    border-radius: 9px;
+    font-size: 14px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+/* Result count */
+.app-content > .count {
+    margin: 0 0 18px;
+    color: var(--mut);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Requests grid */
+.app-content .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 285px), 1fr));
+    align-items: stretch;
+    gap: 22px;
+    width: 100%;
+}
+
+/* Request cards */
+.app-content .cards > .card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+    transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+}
+
+.app-content .cards > .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--red);
+    box-shadow: var(--shadow);
+}
+
+/* Card image */
+.app-content .card > .card-img {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--panel2);
+}
+
+.app-content .card > .card-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.app-content .card:hover > .card-img img {
+    transform: scale(1.045);
+}
+
+.app-content .card > .card-img .ph {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    background: linear-gradient(135deg, var(--rose), var(--panel2));
+    color: var(--gold);
+    font: 700 48px Poppins, sans-serif;
+    text-transform: uppercase;
+}
+
+/* Card information */
+.app-content .card > .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 20px;
+}
+
+.app-content .card-body .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 11px;
+    border: 1px solid var(--glow1);
+    border-radius: 30px;
+    background: var(--glow1);
+    color: var(--red);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.app-content .card-body h3 {
+    margin: -2px 0 0;
+    color: var(--tx);
+    font: 700 19px/1.4 Poppins, sans-serif;
+    overflow-wrap: anywhere;
+}
+
+.app-content .card-body .meta {
+    margin: 0;
+    color: var(--mut);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Quantity progress bar */
+.app-content .card-body .bar {
+    width: 100%;
+    height: 8px;
+    margin: 3px 0 0;
+    overflow: hidden;
+    border-radius: 20px;
+    background: var(--panel2);
+    border: 1px solid var(--line);
+}
+
+.app-content .card-body .bar i {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    transition: width .35s ease;
+}
+
+/* View button */
+.app-content .card-body > .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    margin-top: auto;
+    padding: 9px 18px;
+    border-radius: 9px;
+    font-size: 13px;
+}
+
+/* Empty search result */
+.app-content .cards > .empty {
+    grid-column: 1 / -1;
+    padding: 38px 22px;
+    border: 1px dashed var(--line);
+    border-radius: 14px;
+    background: var(--panel);
+    color: var(--mut);
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Pagination */
+.app-content .pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 30px 0 8px;
+}
+
+.app-content .pager a,
+.app-content .pager span {
+    display: inline-flex;
+    min-width: 40px;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 13px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--panel);
+    color: var(--mut);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.app-content .pager a:hover {
+    border-color: var(--red);
+    color: var(--tx);
+}
+
+.app-content .pager .on {
+    border-color: transparent;
+    background: linear-gradient(135deg, var(--red), var(--maroon));
+    color: #fff;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+    .app-content .cards {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+        gap: 18px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .app-content > .ph-row h1 {
+        font-size: 28px;
+    }
+
+    .app-content form.filters {
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .app-content form.filters input,
+    .app-content form.filters select {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .app-content form.filters .btn {
+        flex: 1 1 auto;
+    }
+
+    .app-content .cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .app-content .card > .card-img {
+        aspect-ratio: 16 / 9;
+    }
+
+    .app-content .card > .card-body {
+        padding: 17px;
+    }
+}

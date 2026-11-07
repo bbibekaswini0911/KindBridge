@@ -1,0 +1,46 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Messages | KindBridge{% endblock %}
+{% block page_title %}Messages{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/admin-messages.css' %}?v=2">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>Messages from the landing page</h1>
+    <p>{{ unread }} unread of {{ total }} total.</p>
+  </div>
+</div>
+
+<div class="tabs-row">
+  <a class="{% if show == 'unread' %}on{% endif %}" href="?show=unread">Unread ({{ unread }})</a>
+  <a class="{% if show == 'all' %}on{% endif %}" href="?show=all">All ({{ total }})</a>
+</div>
+
+{% for m in page %}
+  <article class="msg {% if not m.is_read %}new{% endif %}">
+    <div class="msg-head">
+      <div>
+        <h3>{{ m.name }}</h3>
+        <p class="meta"><a href="mailto:{{ m.email }}">{{ m.email }}</a> &middot; {{ m.created_at|date:"d M Y, h:i A" }}</p>
+      </div>
+      <form method="post" action="{% url 'message_read' m.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button class="btn ghost small" type="submit">{% if m.is_read %}Mark unread{% else %}Mark as read{% endif %}</button>
+      </form>
+    </div>
+    <p>{{ m.message|linebreaksbr }}</p>
+  </article>
+{% empty %}
+  <div class="empty">{% if show == 'unread' %}No unread messages. Everything is read.{% else %}No messages yet.{% endif %}</div>
+{% endfor %}
+
+{% if page.paginator.num_pages > 1 %}
+  <nav class="pager" aria-label="Pages">
+    {% if page.has_previous %}<a href="?{{ qs }}&page={{ page.previous_page_number }}">&larr; Prev</a>{% endif %}
+    {% for n in page.paginator.page_range %}{% if n == page.number %}<span class="on">{{ n }}</span>{% else %}<a href="?{{ qs }}&page={{ n }}">{{ n }}</a>{% endif %}{% endfor %}
+    {% if page.has_next %}<a href="?{{ qs }}&page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+  </nav>
+{% endif %}
+{% endblock %}

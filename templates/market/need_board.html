@@ -1,0 +1,56 @@
+{% extends 'layouts/app.html' %}
+{% load static %}
+{% block title %}Needs market | KindBridge{% endblock %}
+{% block page_title %}Needs market{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/need-board.css' %}?v=3">{% endblock %}
+
+{% block content %}
+<div class="ph-row">
+  <div>
+    <h1>Needs market</h1>
+    <p>Care centres post what they need. Take a request, contact the centre and donate.</p>
+  </div>
+</div>
+
+<form class="filters" method="get">
+  <input name="q" value="{{ values.q }}" placeholder="Search item or care centre">
+  <select name="category" aria-label="Category">
+    <option value="">All categories</option>
+    {% for value, label in categories %}<option value="{{ value }}" {% if values.category == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+  <input name="state" value="{{ values.state }}" placeholder="State or district">
+  <button class="btn" type="submit">Search</button>
+  {% if filtered %}<a class="btn ghost" href="{% url 'need_board' %}">Reset</a>{% endif %}
+</form>
+<p class="count">{{ page.paginator.count }} open request{{ page.paginator.count|pluralize }}</p>
+
+<div class="cards">
+  {% for p in page %}
+    <article class="card">
+      <a class="card-img" href="{% url 'need_detail' p.pk %}">
+        {% if p.cover %}<img src="{{ p.cover.image.url }}" alt="{{ p.title }}" loading="lazy">{% else %}<div class="ph">{{ p.title|first }}</div>{% endif %}
+      </a>
+      <div class="card-body">
+        <span class="chip">{{ p.get_category_display }}</span>
+        <h3>{{ p.title }}</h3>
+        <p class="meta">{{ p.center.name }}, {{ p.center.district }}</p>
+        <div class="bar" title="Already taken">
+          <i style="--w: {{ p.percent }}%; width: var(--w)"></i>
+        </div>
+        <p class="meta">{{ p.remaining }} of {{ p.quantity }} {{ p.unit }} still needed</p>
+        <a class="btn ghost" href="{% url 'need_detail' p.pk %}">View and take</a>
+      </div>
+    </article>
+  {% empty %}
+    <div class="empty" style="grid-column:1/-1">No open requests match your search.</div>
+  {% endfor %}
+</div>
+
+{% if page.paginator.num_pages > 1 %}
+  <nav class="pager" aria-label="Pages">
+    {% if page.has_previous %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.previous_page_number }}">&larr; Prev</a>{% endif %}
+    {% for n in page.paginator.page_range %}{% if n == page.number %}<span class="on">{{ n }}</span>{% else %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ n }}">{{ n }}</a>{% endif %}{% endfor %}
+    {% if page.has_next %}<a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page.next_page_number }}">Next &rarr;</a>{% endif %}
+  </nav>
+{% endif %}
+{% endblock %}
