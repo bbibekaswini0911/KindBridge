@@ -124,18 +124,11 @@ DATABASES = {
 
         'OPTIONS': {
             'charset': 'utf8mb4',
-            **({
-                'ssl_mode': 'VERIFY_IDENTITY',
-                'ssl': {
-                    'ca': '/etc/ssl/certs/ca-certificates.crt',
-                },
-            } if not DEBUG else {}),
         },
 
         'CONN_MAX_AGE': 60,
     }
 }
-
 # =====================================================
 # PASSWORD VALIDATION
 # =====================================================
