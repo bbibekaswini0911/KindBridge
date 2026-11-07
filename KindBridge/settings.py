@@ -116,14 +116,8 @@ DATABASE_OPTIONS = {
     'charset': 'utf8mb4',
 }
 
-# Enable TLS for the online TiDB database
 if os.getenv('DB_HOST', '127.0.0.1') not in ('127.0.0.1', 'localhost'):
-    DATABASE_OPTIONS.update({
-        'ssl_mode': 'VERIFY_IDENTITY',
-        'ssl': {
-            'ca': '/etc/ssl/certs/ca-certificates.crt',
-        },
-    })
+    DATABASE_OPTIONS['ssl_mode'] = 'PREFERRED'
 
 
 DATABASES = {
