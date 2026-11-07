@@ -117,7 +117,7 @@ DATABASE_OPTIONS = {
 }
 
 if os.getenv('DB_HOST', '127.0.0.1') not in ('127.0.0.1', 'localhost'):
-    DATABASE_OPTIONS['ssl_mode'] = 'PREFERRED'
+    DATABASE_OPTIONS['ssl_mode'] = 'REQUIRED'
 
 
 DATABASES = {
